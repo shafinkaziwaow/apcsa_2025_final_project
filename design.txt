@@ -1,0 +1,17 @@
+The Legend of Processing 
+
+The map layout can probably be held in a 2d array or something similar ? 
+
+{   { top-left, top-middle, top-right }
+    { center-left, center-middle, center-right }
+    { bottom-left, bottom-middle, bottom-right }   }   
+
+something like this ^^
+
+when hitting the border of the map, it redraws the background to match the corresponding map 
+e.g. when you're in the center-middle room and you hit x == 0 --> you change to the center-left room 
+
+There could be a room class and each position in the array holds a room object so the properties of the rooms are better held / organized 
+
+
+There would be a 
