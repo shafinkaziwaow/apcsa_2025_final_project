@@ -14,4 +14,17 @@ e.g. when you're in the center-middle room and you hit x == 0 --> you change to 
 There could be a room class and each position in the array holds a room object so the properties of the rooms are better held / organized 
 
 
-There would be a 
+There would be an enemy class for the one (1) type of enemy TwT 
+    - holds their position and health
+    - their behavior would be to walk forward until they hit the end of the map or until they hit an obstacle in the room   
+    - upon which they turn around and continue walking 
+    - if they come within range of the player, they attack (maybe melee, maybe projectile if im up for it)
+    - if the player's attack overlaps their coordinates, they take damage  
+    - if health == 0 they die and they are permanently removed from the map (maybe)
+
+Player class 
+    - holds their position and health 
+    - if their coords overlap with an enemies or if they get hit with an enemy attack, they take damage 
+    - if health == 0 they die 
+    - they have an attack that can damage enemies 
+    - if the player coords hit an opening at the ends of a room, it changes to the next room    
