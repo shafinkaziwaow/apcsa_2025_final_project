@@ -23,8 +23,8 @@ class Room {
     for (PVector coord : obstCoords) {
       stroke(0);
       fill(0); 
-      int hei = random(40) + 10;
-      int wid = random(40) + 10;
+      int hei = (int) random(40) + 10;
+      int wid = (int) random(40) + 10;
       rect(coord.x, coord.y, hei, wid);
     }
   }
