@@ -1,5 +1,7 @@
-void setup() {
+ArrayList<room> map;
 
+void setup() {
+  
 }
 
 void draw() {
