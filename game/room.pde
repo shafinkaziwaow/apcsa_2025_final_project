@@ -12,6 +12,22 @@ class Room {
     this.enemyCoords = enemyCoords;
   }
   
+  public int getWidth() {
+    return w;
+  }
+  
+  public int getHeight() {
+    return h;
+  }
+  
+  public void setWidth(int w) {
+    this.w = w;
+  }
+  
+  public void setHeight(int h) {
+    this.h = h;
+  }
+  
   public void placeEnemies() {
     for (PVector coord : enemyCoords) {
       // probably will have an enemy class 

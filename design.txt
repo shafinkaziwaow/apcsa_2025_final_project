@@ -1,12 +1,24 @@
-The Legend of Processing 
+Intro
+APCSA Period 7
+Shafin Kazi
+The Legend of Processing
 
-The map layout can probably be held in a 2d array or something similar ? 
+Description 
+
+The player spawns in a room where there are multiple pathways, but one is blocked by a stationary enemy 
+The player has to go into a room to pick up a sword, bow, and arrows 
+The player can then go back and defeat the enemy with their new equipment to progress 
+There would be a clear path to the final boss, but the player would be encouraged to go to different rooms so that they can explore / loot / level up (potentially) 
+Leveling up increases ATK and HP
+After defeating the final boss, the player wins 
+
+The map layout can probably be held in a 2d array or something similar 
 
 {   { top-left, top-middle, top-right }
     { center-left, center-middle, center-right }
     { bottom-left, bottom-middle, bottom-right }   }   
 
-something like this ^^
+Will likely be refined later to be less uniform / samey
 
 when hitting the border of the map, it redraws the background to match the corresponding map 
 e.g. when you're in the center-middle room and you hit x == 0 --> you change to the center-left room 
@@ -14,17 +26,25 @@ e.g. when you're in the center-middle room and you hit x == 0 --> you change to 
 There could be a room class and each position in the array holds a room object so the properties of the rooms are better held / organized 
 
 
-There would be an enemy class for the one (1) type of enemy TwT 
-    - holds their position and health
-    - their behavior would be to walk forward until they hit the end of the map or until they hit an obstacle in the room   
-    - upon which they turn around and continue walking 
-    - if they come within range of the player, they attack (maybe melee, maybe projectile if im up for it)
-    - if the player's attack overlaps their coordinates, they take damage  
-    - if health == 0 they die and they are permanently removed from the map (maybe)
+Entity Class
+    - holds hp, atk, position
 
-Player class 
-    - holds their position and health 
+Enemy Class extends Entity 
+    - enemy entities behavior would be to walk forward until they hit the end of the map or until they hit an obstacle in the room upon which they turn around and continue walking 
+    - if they come within range of the player, they attack the area in front of them (creates a hitbox in front of them)
+    - if the player's attack overlaps their coordinates, they take damage  
+    - if health == 0 they die and they are removed from the map
+
+Player class extends Entity 
+    - holds an inventory 
     - if their coords overlap with an enemies or if they get hit with an enemy attack, they take damage 
     - if health == 0 they die 
-    - they have an attack that can damage enemies 
+    - they have attacks that can damage enemies 
     - if the player coords hit an opening at the ends of a room, it changes to the next room    
+
+
+Functionalities 
+    - WASD to move on the map
+    - j -- melee attack 
+    - k -- ranged attack (only usable if you have ammo in inventory)
+    - i -- interact (?) possibly if there are things to interact with 
