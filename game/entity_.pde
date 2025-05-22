@@ -1,11 +1,13 @@
 class entity {
 
+  String name;
   int hp;
   PVector pos;
   int atk;
   
   
-  public entity(int hp, int atk, PVector pos) {
+  public entity(String name, int hp, int atk, PVector pos) {
+    this.name = name;
     this.hp = hp;
     this.atk = atk;
     this.pos = pos;
@@ -36,18 +38,7 @@ class entity {
   }
   
   public void attack(entity other) {
-<<<<<<< HEAD
-<<<<<<< HEAD
     other.setHP(other.getHP() - this.atk);  
-=======
-    other.setHP(other.getHP() - this.atk);
->>>>>>> room
-=======
-    other.setHP(other.getHP() - this.atk);
-=======
-    other.setHP(other.getHP() - this.atk);  
->>>>>>> entity
->>>>>>> game
   }
 
 }

@@ -1,11 +1,11 @@
-class Room {
+class room {
   
   private int w; // width of the room
   private int h; // height of the room
   ArrayList<PVector> obstCoords; // coordinates of any obstacles in the room 
   ArrayList<entity> enemies; // coordinates of any enemies in the room 
   
-  public Room(int w, int h, ArrayList<PVector> obstCoords, ArrayList<entity> enemies) {
+  public room(ArrayList<PVector> obstCoords, ArrayList<entity> enemies) {
     this.w = width / 10;
     this.h = height / 10;
     this.obstCoords = obstCoords;
