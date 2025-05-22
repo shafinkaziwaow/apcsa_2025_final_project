@@ -2,14 +2,14 @@ class Room {
   
   private int w; // width of the room
   private int h; // height of the room
-  private ArrayList<PVector> obstCoords; // coordinates of any obstacles in the room 
-  private ArrayList<PVector> enemyCoords; // coordinates of any enemies in the room 
+  ArrayList<PVector> obstCoords; // coordinates of any obstacles in the room 
+  ArrayList<entity> enemies; // coordinates of any enemies in the room 
   
-  public Room(int w, int h, ArrayList<PVector> obstCoords, ArrayList<PVector> enemyCoords) {
+  public Room(int w, int h, ArrayList<PVector> obstCoords, ArrayList<entity> enemies) {
     this.w = width / 10;
     this.h = height / 10;
     this.obstCoords = obstCoords;
-    this.enemyCoords = enemyCoords;
+    this.enemies = enemies;
   }
   
   public int getWidth() {
@@ -26,13 +26,6 @@ class Room {
   
   public void setHeight(int h) {
     this.h = h;
-  }
-  
-  public void placeEnemies() {
-    for (PVector coord : enemyCoords) {
-      // probably will have an enemy class 
-      // create an enemy object and place them at coord.x, coord.y 
-    }
   }
   
   public void placeObstacles() {

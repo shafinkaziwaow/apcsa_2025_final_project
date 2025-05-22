@@ -36,7 +36,11 @@ class entity {
   }
   
   public void attack(entity other) {
+<<<<<<< HEAD
     other.setHP(other.getHP() - this.atk);  
+=======
+    other.setHP(other.getHP() - this.atk);
+>>>>>>> room
   }
 
 }
