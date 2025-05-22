@@ -30,7 +30,10 @@ Entity Class
     - holds hp, atk, position
 
 Enemy Class extends Entity 
+<<<<<<< HEAD
     - holds the range at which the enemy can detect the player 
+=======
+>>>>>>> game
     - enemy entities behavior would be to walk forward until they hit the end of the map or until they hit an obstacle in the room upon which they turn around and continue walking 
     - if they come within range of the player, they attack the area in front of them (creates a hitbox in front of them)
     - if the player's attack overlaps their coordinates, they take damage  
@@ -48,5 +51,9 @@ Functionalities
     - WASD to move on the map
     - j -- melee attack 
     - k -- ranged attack (only usable if you have ammo in inventory)
+<<<<<<< HEAD
     - i -- interact
    
+=======
+    - i -- interact (?) possibly if there are things to interact with 
+>>>>>>> game
