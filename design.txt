@@ -49,3 +49,4 @@ Functionalities
     - j -- melee attack 
     - k -- ranged attack (only usable if you have ammo in inventory)
     - i -- interact
+   
