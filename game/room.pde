@@ -1,14 +1,15 @@
 class room {
-  
+  int width = 1536;
+  int height = 864;
   private int w; // width of the room
   private int h; // height of the room
-  ArrayList<PVector> obstCoords; // coordinates of any obstacles in the room 
-  ArrayList<entity> enemies; // coordinates of any enemies in the room 
+  public ArrayList<obstacle> obstacles; // coordinates of any obstacles in the room 
+  public ArrayList<entity> enemies; // coordinates of any enemies in the room 
   
-  public room(ArrayList<PVector> obstCoords, ArrayList<entity> enemies) {
+  public room(ArrayList<obstacle> obstacles, ArrayList<entity> enemies) {
     this.w = width / 10;
     this.h = height / 10;
-    this.obstCoords = obstCoords;
+    this.obstacles = obstacles;
     this.enemies = enemies;
   }
   
@@ -29,12 +30,11 @@ class room {
   }
   
   public void placeObstacles() {
-    for (PVector coord : obstCoords) {
+    for (obstacle ob : obstacles) {
       stroke(0);
       fill(0); 
-      int hei = (int) random(40) + 10;
-      int wid = (int) random(40) + 10;
-      rect(coord.x, coord.y, hei, wid);
+      rect(ob.pos.x, ob.pos.y, ob.w, ob.h);
+      //rect(width / 2, height / 2, 100, 100);
     }
   }
   
