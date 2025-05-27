@@ -15,6 +15,7 @@ class obstacle {
   public obstacle(PVector pos, color c) {
     this.w = (int) random(400) + 100;
     this.h = (int) random(400) + 100;
+    this.pos = pos;
     this.c = c;
   }
   
