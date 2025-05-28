@@ -1,6 +1,6 @@
 class room {
-  int width = 1536;
-  int height = 864;
+  int width = 1550;
+  int height = 875;
   private int w; // width of the room
   private int h; // height of the room
   public ArrayList<obstacle> obstacles; // coordinates of any obstacles in the room 

@@ -1,6 +1,6 @@
 class obstacle {
-  int width = 1536;
-  int height = 864;
+  int width = 1550;
+  int height = 875;
   int w;
   int h;
   PVector pos;
