@@ -1,5 +1,6 @@
 class player extends entity {
-  
+  int width = 1536;
+  int height = 864;
   ArrayList<String> inventoryNames;
   ArrayList<Integer> inventoryQuantities;
   
@@ -10,15 +11,38 @@ class player extends entity {
   }
   
   public boolean cannotGo(obstacle o, int dir) { // 1 == N, 2 == E, 3 == S, 4 == W
-      if (dir == 1) {
-        return (pos.y > o.pos.y + o.h && pos.x + 50 <= o.pos.x + o.w && pos.x >= o.pos.x); // y is above the lower bound of obj, and between its width
-      } else if (dir == 2) {
-        return (pos.x >= o.pos.x - 50 && pos.y >= o.pos.y && pos.y + 50 <= o.pos.y + o.h);
-      } else if (dir == 3) {
-        return (pos.y + 50 >= o.pos.y + o.h && pos.x + 50 >= o.pos.x + o.w && pos.x <= o.pos.x);
-      } else {
-        return (pos.x <= o.pos.x + o.w && pos.y <= o.pos.y && pos.y + 50 >= o.pos.y + o.h);
+    // makes things easier
+    float pLeft = pos.x;
+    float pRight = pos.x + 50;
+    float pTop = pos.y;
+    float pBottom = pos.y + 50;
+    float oLeft = o.pos.x;
+    float oRight = o.pos.x + o.w;
+    float oTop = o.pos.y;
+    float oBottom = o.pos.y + o.h;
+    
+    if (dir == 1) {
+      return (pTop <= 0 || pTop <= oBottom && pBottom > oBottom && pRight > oLeft && pLeft < oRight);
+    } else if (dir == 2) {
+      return (pRight >= width || pRight >= oLeft && pLeft < oLeft && pBottom > oTop && pTop < oBottom);
+    } else if (dir == 3) {
+      return (pBottom >= height || pBottom >= oTop && pTop < oTop && pRight > oLeft && pLeft < oRight);
+    } else if (dir == 4) {
+      return (pLeft <= 0 || pLeft <= oRight && pRight > oRight && pBottom > oTop && pTop < oBottom);
+    } else {
+      return false;  
+    }
+  }
+  
+  public boolean cannotGoes(room r, int dir) {
+    boolean returning = false;
+    for (obstacle o : r.obstacles ) {
+      if (cannotGo(o, dir)) {
+        returning = true;
+        break;
       }
     }
+      return returning;
+  }
     
 }

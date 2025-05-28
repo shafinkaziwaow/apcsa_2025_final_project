@@ -20,20 +20,21 @@ The map layout can probably be held in a 2d array or something similar
 
 Will likely be refined later to be less uniform / samey
 
-when hitting the border of the map, it redraws the background to match the corresponding map 
-e.g. when you're in the center-middle room and you hit x == 0 --> you change to the center-left room 
+when hitting the border of the map and pressing the interact button, it redraws the background to match the corresponding map 
+e.g. when you're in the center-middle room and you hit i when x == 0 --> you change to the center-left room 
 
-There could be a room class and each position in the array holds a room object so the properties of the rooms are better held / organized 
+Room Class 
+    - holds all the obstacles and enemies and their layout in that specific room 
+
+Obstacle Class 
+    - holds position and size of obstacles
 
 
 Entity Class
     - holds hp, atk, position
 
 Enemy Class extends Entity 
-<<<<<<< HEAD
     - holds the range at which the enemy can detect the player 
-=======
->>>>>>> game
     - enemy entities behavior would be to walk forward until they hit the end of the map or until they hit an obstacle in the room upon which they turn around and continue walking 
     - if they come within range of the player, they attack the area in front of them (creates a hitbox in front of them)
     - if the player's attack overlaps their coordinates, they take damage  
@@ -47,13 +48,13 @@ Player class extends Entity
     - if the player coords hit an opening at the ends of a room, it changes to the next room    
 
 
-Functionalities 
-    - WASD to move on the map
-    - j -- melee attack 
-    - k -- ranged attack (only usable if you have ammo in inventory)
-<<<<<<< HEAD
-    - i -- interact
-   
-=======
-    - i -- interact (?) possibly if there are things to interact with 
->>>>>>> game
+Controls 
+    - WASD to move
+    - I to interact 	
+
+
+Functionalities / Issues 
+    - Currently, I have moving and collisions with obstacles (you can't go into them) 
+    - I started on the map idea where pressing a button on the border of the screen takes you to a new room
+    - By next meeting, I'd hope to have the map done (all the different rooms arranged and connected) 
+    - Getting started on player/enemy moves would be good as well

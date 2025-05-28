@@ -9,6 +9,7 @@ class obstacle {
   public obstacle(int w, int h, PVector pos, int c) {
     this.w = w;
     this.h = h;
+    this.pos = pos;
     this.c = c;
   } 
   
