@@ -27,7 +27,7 @@ void setup() {
   currentRoom = centerRoom;
   
   map2.add(bottomRightRoom);
-  map2.add(null);
+  //map2.add(null);
   fullMap.add(map2);
   bottomRightRoom.obstacles.add(obst4);
 }
