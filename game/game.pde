@@ -57,7 +57,7 @@ void keyPressed() {
     hero.pos.x += speed;
   }
   
-  if (key == 'f') {
+  if (key == 'i') {
     
     if (hero.pos.x >= width - 50) { // going right 
       if (currentRoomHindex != fullMap.get(currentRoomVindex).size() -1) {
