@@ -10,7 +10,7 @@ class player extends entity {
     this.inventoryQuantities = inventoryQuantities;
   }
   
-  public boolean cannotGo(obstacle o, int dir) { // 1 == N, 2 == E, 3 == S, 4 == W
+  public boolean cannotGoObsts(obstacle o, int dir) { // 1 == N, 2 == E, 3 == S, 4 == W
     // makes things easier
     float pLeft = pos.x;
     float pRight = pos.x + 50;
@@ -34,10 +34,29 @@ class player extends entity {
     }
   }
   
+  public boolean cannotGoBorder(int dir) {
+    if (dir == 1) {
+      return pos.y <= 0;
+    }
+    if (dir == 2) {
+      return pos.x + 50 >= width;
+    }
+    if (dir == 3) {
+      return pos.y + 50 >= height;
+    }
+    if (dir == 4) {
+      return pos.x <= 0;
+    }
+    return false;
+  }
+  
   public boolean cannotGoes(room r, int dir) {
     boolean returning = false;
+    if (r.obstacles.size() == 0) {
+      return cannotGoBorder(dir);
+    }
     for (obstacle o : r.obstacles ) {
-      if (cannotGo(o, dir)) {
+      if (cannotGoObsts(o, dir)) {
         returning = true;
         break;
       }

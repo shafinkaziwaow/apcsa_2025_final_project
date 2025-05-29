@@ -6,7 +6,7 @@ class obstacle {
   PVector pos;
   color c;
   
-  public obstacle(int w, int h, PVector pos, int c) {
+  public obstacle(int w, int h, PVector pos, color c) {
     this.w = w;
     this.h = h;
     this.pos = pos;
