@@ -1,6 +1,8 @@
 class player extends entity {
-  int width = 1550;
-  int height = 875;
+  //int width = 1550;
+  //int height = 875;
+  int width = 1350;
+  int height = 700;
   ArrayList<String> inventoryNames;
   ArrayList<Integer> inventoryQuantities;
   

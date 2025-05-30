@@ -14,7 +14,8 @@ player hero = new player("hero", 1, 1, new PVector(width / 2, height / 2), new A
 int speed = 25;
 
 void setup() {
-  size(1550, 875);
+  //size(1550, 875);
+  size(1350, 700);
   surface.setLocation(160, 90);
   
   map.add(leftRoom);
