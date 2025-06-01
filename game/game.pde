@@ -10,11 +10,16 @@ room levelOneR = new room();
 room levelTwoL = new room();
 room levelTwoC = new room();
 room levelTwoR = new room();
-player hero = new player("hero", 1, 1, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>());
+player hero = new player("hero", 100, 1, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>());
 int speed = 25;
 
 void setup() {
   //size(1550, 875);
+  //for (ArrayList<room> r : fullMap) {
+  //  for (room er : r) {
+  //    er.p = hero;
+  //  }
+  //}
   size(900, 700);
   surface.setLocation(160, 90);
   
@@ -34,10 +39,25 @@ void setup() {
   fullMap.add(map2);
   levelTwoL.addObstacle(600, 400, 600, 400, 0);
   levelTwoC.addObstacle(350, 200, 900, 800, 0);
+  
+  for (ArrayList<room> r : fullMap) {
+    for (room er : r) {
+      er.p = hero;
+    }
+  }
 }
 
 void draw() {
   load();
+  textSize(30);
+  text("HP: " + hero.hp, 20, 50);
+  
+  if (hero.hp <= 0) {
+    background(0);
+    textSize(100);
+    fill(255, 0, 0);
+    text("You Died!", 250, 370);
+  }
 }
 
 void load() {

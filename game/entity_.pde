@@ -6,6 +6,7 @@ class entity {
   PVector pos;
   int atk;
   int ticks;
+  int dir;
   
   
   public entity(String name, int hp, int atk, PVector pos) {
@@ -13,7 +14,8 @@ class entity {
     this.hp = hp;
     this.atk = atk;
     this.pos = pos;
-    this.ticks = 1;
+    this.ticks = 0;
+    this.dir = 1;
   }
   
   public void attack(entity other) {
@@ -72,28 +74,6 @@ class entity {
       }
     }
       return returning;
-  }
-  
-  public void move(int spd) {
-    int dir = 0;
-    if (ticks % 20 == 0) {
-      dir = (int) (Math.random() * 4) + 1; 
-    } 
-    else {
-      if (dir % 4 == 1) {
-        this.pos.y -= spd;
-      }
-      if (dir % 4 == 2) {
-        this.pos.x += spd;
-      }
-      if (dir % 4 == 3) {
-        this.pos.y += spd;
-      }
-      if (dir % 4 == 0) {
-        this.pos.x -= spd;
-      }
-      ticks++;
-    }
   }
 
 }
