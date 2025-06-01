@@ -11,9 +11,9 @@ class enemy extends entity {
     this.moveCoolDown = 10;
   }
   
-    public void move(int spd, player p) {
+    public void move(int spd, player p, room r) {
     if (ticks % 10 == 0) {
-      newDir(p);
+      newDir(p, r);
     } 
     //else {
       if (dir % 4 == 1) {
@@ -37,30 +37,30 @@ class enemy extends entity {
   //  ticks++;
   //}
   
-  public void newDir(player p) {
+  public void newDir(player p, room r) {
     float closeX = p.pos.x - this.pos.x;
     float closeY = p.pos.y - this.pos.y;
     
-    int preferredDir;
+    int preferreDir;
     
-    if (Math.abs(closeX) > Math.abs(closeY)) {
+    if (Math.abs(closeX) > Math.abs(closeY) || (cannotGoes(r, 1) && cannotGoes(r, 3))) { // if closer horizontally 
       if (closeX > 0) {
-        preferredDir = 2; // right
+        preferreDir = 2; // right
       } else {
-        preferredDir = 4; // left
+        preferreDir = 4; // left
       }
     } else {
-      if (closeY > 0) {
-        preferredDir = 3; // down
+      if (closeY > 0 || (cannotGoes(r, 2) && cannotGoes(r, 4))) {
+        preferreDir = 3; // down
       } else {
-        preferredDir = 1; // up
+        preferreDir = 1; // up
       }
     }
   
   float chance = (float) Math.random();
   
-  if (chance < 0.7) {
-    dir = preferredDir;
+  if (chance < 0.8) {
+    dir = preferreDir;
   } else {
     dir = (int)(Math.random() * 4) + 1;
   }

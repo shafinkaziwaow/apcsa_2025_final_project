@@ -37,7 +37,7 @@ class room {
       fill(255, 0, 0);
       rect(e.pos.x, e.pos.y, 50, 50);
       if (e.cannotGoes(this, e.dir)) {
-        e.newDir(p);
+        e.newDir(p, this);
       } 
       if (e.playerInRange(p)) {
         if (e.atkCoolDown > 0) {
@@ -48,7 +48,7 @@ class room {
         }
       } else {
         if (e.moveCoolDown == 0) {
-          e.move(25, p);
+          e.move(25, p, this);
           e.moveCoolDown = 10;
         } else {
           e.moveCoolDown--;
