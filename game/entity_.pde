@@ -7,6 +7,8 @@ class entity {
   int atk;
   int ticks;
   int dir;
+  int atkCoolDown;
+
   
   
   public entity(String name, int hp, int atk, PVector pos) {
@@ -16,6 +18,7 @@ class entity {
     this.pos = pos;
     this.ticks = 0;
     this.dir = 1;
+    this.atkCoolDown = 60;
   }
   
   public void attack(entity other) {
@@ -74,6 +77,12 @@ class entity {
       }
     }
       return returning;
+  }
+  
+  public boolean inRange(enemy other, int range) {
+    float closeX = (other.pos.x + 25) - (this.pos.x + 25);
+    float closeY = (other.pos.y + 25) - (this.pos.y + 25);
+    return closeX * closeX + closeY * closeY <= range * range;
   }
 
 }

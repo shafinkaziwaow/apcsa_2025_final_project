@@ -54,7 +54,9 @@ class room {
               e.newDir(p, this);
             }
             e.moveCoolDown = 10;
-          } else {
+          }
+            
+            else {
             e.moveCoolDown--;
           }
         }

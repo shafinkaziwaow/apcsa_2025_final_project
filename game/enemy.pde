@@ -1,7 +1,6 @@
 class enemy extends entity {
   
   int range;
-  int atkCoolDown;
   int moveCoolDown;
   
   public enemy(String name, int hp, int atk, PVector pos, int range, int atkCoolDown) {

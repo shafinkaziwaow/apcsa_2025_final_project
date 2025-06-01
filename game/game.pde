@@ -10,7 +10,7 @@ room levelOneR = new room();
 room levelTwoL = new room();
 room levelTwoC = new room();
 room levelTwoR = new room();
-player hero = new player("hero", 100, 1, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>());
+player hero = new player("hero", 100, 50, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>());
 int speed = 25;
 
 void setup() {
@@ -29,6 +29,8 @@ void setup() {
   fullMap.add(map);
   levelOneL.addObstacle(100, 100, 500, 200, 0);
   levelOneL.addObstacle(200, 200, 250, 500, 0);
+  levelOneL.addEnemy(10, 10);
+  levelOneL.addEnemy(800, 600);
   levelOneR.addObstacle(200, 300, 300, 300, 0);
   levelOneR.addEnemy(650, 100);
   currentRoom = levelOneC;
@@ -52,12 +54,26 @@ void draw() {
   textSize(30);
   text("HP: " + hero.hp, 20, 50);
   
+  for (enemy e : currentRoom.enemies) {
+    textSize(15);
+    text("HP: " + e.hp, e.pos.x, e.pos.y - 10);
+    if (e.hp <= 0) {
+      currentRoom.enemies.remove(e);
+      break;
+    }
+  }
+  
+  if (hero.atkCoolDown > 0) {
+    hero.atkCoolDown--;
+  }
+  
   if (hero.hp <= 0) {
     background(0);
     textSize(100);
     fill(255, 0, 0);
     text("You Died!", 250, 370);
   }
+  
 }
 
 void load() {
@@ -120,4 +136,15 @@ void keyPressed() {
     }
     load();
   }
+  
+  if (key == 'j' && hero.atkCoolDown == 0) {
+    for (enemy e : currentRoom.enemies) {
+      if (hero.inRange(e, 75)) {
+        hero.attack(e);
+        hero.atkCoolDown = 15;
+        break;
+      }
+    }
+  }
+
 }
