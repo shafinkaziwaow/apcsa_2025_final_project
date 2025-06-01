@@ -10,7 +10,7 @@ class player extends entity {
     super(name, hp, atk, pos);
     this.inventoryNames = inventoryNames;
     this.inventoryQuantities = inventoryQuantities;
-    this.atkCoolDown = 15;
+    this.atkCoolDown = 30;
   }
     
 }

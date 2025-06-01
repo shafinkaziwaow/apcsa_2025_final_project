@@ -141,7 +141,7 @@ void keyPressed() {
     for (enemy e : currentRoom.enemies) {
       if (hero.inRange(e, 75)) {
         hero.attack(e);
-        hero.atkCoolDown = 15;
+        hero.atkCoolDown = 30;
         break;
       }
     }
