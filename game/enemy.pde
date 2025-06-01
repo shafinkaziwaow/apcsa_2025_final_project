@@ -12,7 +12,7 @@ class enemy extends entity {
   }
   
     public void move(int spd, player p, room r) {
-    if (ticks % 10 == 0) {
+    if (ticks % 5 == 0) {
       newDir(p, r);
     } 
     //else {

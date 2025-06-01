@@ -38,20 +38,25 @@ class room {
       rect(e.pos.x, e.pos.y, 50, 50);
       if (e.cannotGoes(this, e.dir)) {
         e.newDir(p, this);
-      } 
-      if (e.playerInRange(p)) {
-        if (e.atkCoolDown > 0) {
-          e.atkCoolDown--;
+      } else { 
+        if (e.playerInRange(p)) {
+          if (e.atkCoolDown > 0) {
+            e.atkCoolDown--;
+          } else {
+            e.attack(p);
+            e.atkCoolDown = 100;
+          }
         } else {
-          e.attack(p);
-          e.atkCoolDown = 100;
-        }
-      } else {
-        if (e.moveCoolDown == 0) {
-          e.move(25, p, this);
-          e.moveCoolDown = 10;
-        } else {
-          e.moveCoolDown--;
+          if (e.moveCoolDown == 0) {
+            if (!e.cannotGoes(this, e.dir)) {
+              e.move(25, p, this);
+            } else {
+              e.newDir(p, this);
+            }
+            e.moveCoolDown = 10;
+          } else {
+            e.moveCoolDown--;
+          }
         }
       }
     }
