@@ -23,7 +23,7 @@ void setup() {
   fullMap.add(map);
   levelOneL.addObstacle(100, 100, 500, 200, 0);
   levelOneL.addObstacle(200, 200, 250, 500, 0);
-  levelOneL.addEnemy(10, 25);
+  levelOneL.addEnemy(10, 50);
   levelOneL.addEnemy(800, 600);
   levelOneR.addObstacle(200, 300, 300, 300, 0);
   levelOneR.addEnemy(650, 100);
