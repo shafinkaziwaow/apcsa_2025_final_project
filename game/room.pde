@@ -39,7 +39,7 @@ class room {
       if (e.cannotGoes(this, e.dir)) {
         e.newDir(p, this);
       } else { 
-        if (e.playerInRange(p)) {
+        if (e.inRange(p, e.range)) {
           if (e.atkCoolDown > 0) {
             e.atkCoolDown--;
           } else {

@@ -79,7 +79,7 @@ class entity {
       return returning;
   }
   
-  public boolean inRange(enemy other, int range) {
+  public boolean inRange(entity other, int range) {
     float closeX = (other.pos.x + 25) - (this.pos.x + 25);
     float closeY = (other.pos.y + 25) - (this.pos.y + 25);
     return closeX * closeX + closeY * closeY <= range * range;

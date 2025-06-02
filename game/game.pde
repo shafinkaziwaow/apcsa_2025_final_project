@@ -3,8 +3,8 @@ ArrayList<room> map2 = new ArrayList<room>();
 ArrayList<ArrayList<room>> fullMap = new ArrayList<ArrayList<room>>();
 room currentRoom;
 float atkAng = 0;
-int currentRoomHindex = 1; // horizontal index
-int currentRoomVindex = 0; // vertical index
+int hindex = 1; // horizontal index
+int vindex = 0; // vertical index
 room levelOneL = new room();
 room levelOneC = new room();
 room levelOneR = new room();
@@ -12,6 +12,7 @@ room levelTwoL = new room();
 room levelTwoC = new room();
 room levelTwoR = new room();
 player hero = new player("hero", 100, 50, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>());
+entity sword = new entity("playerSword", 0, 0, new PVector(hero.pos.x, hero.pos.y));
 int speed = 25;
 
 void setup() {
@@ -53,6 +54,7 @@ void setup() {
 
 void draw() {
   load();
+  sword.pos = hero.pos;
   textSize(30);
   text("HP: " + hero.hp, 35, 50);
   text("ATK cooldown: " + hero.atkCoolDown, 35, 90);
@@ -113,40 +115,40 @@ void keyPressed() {
   if (key == 'i') {
     
     if (hero.pos.x >= width - 50) { // going right 
-      if (currentRoomHindex != fullMap.get(currentRoomVindex).size() -1 && fullMap.get(currentRoomVindex).get(currentRoomHindex + 1) != null) {
-        currentRoomHindex++;
+      if (hindex != fullMap.get(vindex).size() -1 && fullMap.get(vindex).get(hindex + 1) != null) {
+        hindex++;
         hero.pos.x = 25;
+        fullMap.get(vindex).get(hindex).addObstacle(25, 100, 0, height / 2 - 50, 0);
+        fullMap.get(vindex).get(hindex).addObstacle(25, 100, width - 25, height / 2 - 50, 0);
       }
-      currentRoom = fullMap.get(currentRoomVindex).get(currentRoomHindex);
-      currentRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
-      currentRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
+      currentRoom = fullMap.get(vindex).get(hindex);
     }
     
     else if (hero.pos.x <= 0 + 50) { // going left 
-      if (currentRoomHindex != 0 && fullMap.get(currentRoomVindex).get(currentRoomHindex - 1) != null) {
-        currentRoomHindex--;
+      if (hindex != 0 && fullMap.get(vindex).get(hindex - 1) != null) {
+        hindex--;
         hero.pos.x = width - 75;
+        fullMap.get(vindex).get(hindex).addObstacle(25, 100, 0, height / 2 - 50, 0);
+        fullMap.get(vindex).get(hindex).addObstacle(25, 100, width - 25, height / 2 - 50, 0);
       }
-      currentRoom = fullMap.get(currentRoomVindex).get(currentRoomHindex);
-      currentRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
-      currentRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
+      currentRoom = fullMap.get(vindex).get(hindex);
     }
     
     //else if (hero.pos.y <= 0 + 50) { // going up
-    //  if (currentRoomVindex != 0 && fullMap.get(currentRoomVindex - 1).get(currentRoomHindex) != null) {
-    //    currentRoomVindex--;
+    //  if (vindex != 0 && fullMap.get(vindex - 1).get(hindex) != null) {
+    //    vindex--;
     //    hero.pos.y = height - 50;
     //  }
-    //  currentRoom = fullMap.get(currentRoomVindex).get(currentRoomHindex);
+    //  currentRoom = fullMap.get(vindex).get(hindex);
     //} 
     
     else if (hero.pos.y >= height - 50) { // going down
-      if (currentRoomVindex != fullMap.size() - 1 && fullMap.get(currentRoomVindex + 1).get(currentRoomHindex) != null) {
-      //if (currentRoomVindex != fullMap.size() - 1 && fullMap.get(currentRoomVindex + 1).get(currentRoomHindex) != null) {
-        currentRoomVindex++;
+      if (vindex != fullMap.size() - 1 && fullMap.get(vindex + 1).get(hindex) != null) {
+      //if (vindex != fullMap.size() - 1 && fullMap.get(vindex + 1).get(hindex) != null) {
+        vindex++;
         hero.pos.y = 25;
       }
-      currentRoom = fullMap.get(currentRoomVindex).get(currentRoomHindex);
+      currentRoom = fullMap.get(vindex).get(hindex);
     }
     load();
   }
@@ -154,7 +156,7 @@ void keyPressed() {
   if (key == 'j' && hero.atkCoolDown == 0) {
     hero.atkCoolDown = 30;
     for (enemy e : currentRoom.enemies) {
-      if (hero.inRange(e, 75)) {
+      if (sword.inRange(e, 75)) {
         hero.attack(e);
         //hero.atkCoolDown = 30;
         break;
