@@ -23,11 +23,12 @@ class obstacle {
   }
   
   public obstacle(color c) {
-    this.w = (int) random(400) + 100;
-    this.h = (int) random(400) + 100;
-    int posX = (int) (Math.random() * (width - w));
-    int posY = (int) (Math.random() * (height - h));
-    this.pos = new PVector(posX, posY);
+    this.w = 25 * ((int) Math.random() * 20);
+    this.h = 25 * ((int) Math.random() * 20);
+    //int posX = 25 * ((int) Math.random() * (width - w)) - 50;
+    //int posY = 25 * ((int) Math.random() * (height - h)) - 50;
+    //this.pos = new PVector(posX, posY);
+    this.pos = new PVector(0, 0);
     this.c = c;
   }
   

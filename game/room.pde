@@ -22,12 +22,16 @@ class room {
       stroke(0);
       fill(0); 
       rect(ob.pos.x, ob.pos.y, ob.w, ob.h);
-      //rect(width / 2, height / 2, 100, 100);
     }
   }
   
   public void addObstacle(int w, int h, int x, int y, color c) {
     obstacle newObst = new obstacle(w, h, new PVector(x, y), c);
+    obstacles.add(newObst);
+  }
+  
+  public void addObstacle(color c) {
+    obstacle newObst = new obstacle(c);
     obstacles.add(newObst);
   }
   
