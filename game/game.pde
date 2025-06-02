@@ -2,6 +2,7 @@ ArrayList<room> map = new ArrayList<room>();
 ArrayList<room> map2 = new ArrayList<room>();
 ArrayList<ArrayList<room>> fullMap = new ArrayList<ArrayList<room>>();
 room currentRoom;
+float atkAng = 0;
 int currentRoomHindex = 1; // horizontal index
 int currentRoomVindex = 0; // vertical index
 room levelOneL = new room();
@@ -23,7 +24,7 @@ void setup() {
   fullMap.add(map);
   levelOneL.addObstacle(100, 100, 500, 200, 0);
   levelOneL.addObstacle(200, 200, 250, 500, 0);
-  levelOneL.addEnemy(10, 50);
+  levelOneL.addEnemy(50, 100);
   levelOneL.addEnemy(800, 600);
   levelOneR.addObstacle(200, 300, 300, 300, 0);
   levelOneR.addEnemy(650, 100);
@@ -53,7 +54,8 @@ void setup() {
 void draw() {
   load();
   textSize(30);
-  text("HP: " + hero.hp, 30, 50);
+  text("HP: " + hero.hp, 35, 50);
+  text("ATK cooldown: " + hero.atkCoolDown, 35, 90);
   
   for (enemy e : currentRoom.enemies) {
     textSize(15);
@@ -66,6 +68,13 @@ void draw() {
   
   if (hero.atkCoolDown > 0) {
     hero.atkCoolDown--;
+    atkAng -= 0.25;
+    push();
+    translate(hero.pos.x + 25, hero.pos.y + 25);
+    rotate(atkAng);
+    fill(0, 0, 255);
+    rect(0, -2.5, 75, 5);
+    pop();
   }
   
   if (hero.hp <= 0) {
@@ -143,10 +152,11 @@ void keyPressed() {
   }
   
   if (key == 'j' && hero.atkCoolDown == 0) {
+    hero.atkCoolDown = 30;
     for (enemy e : currentRoom.enemies) {
       if (hero.inRange(e, 75)) {
         hero.attack(e);
-        hero.atkCoolDown = 30;
+        //hero.atkCoolDown = 30;
         break;
       }
     }
