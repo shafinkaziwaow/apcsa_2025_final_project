@@ -26,7 +26,7 @@ class room {
     }
   }
   
-  public void addObstacle(int w, int h, int x, int y, int c) {
+  public void addObstacle(int w, int h, int x, int y, color c) {
     obstacle newObst = new obstacle(w, h, new PVector(x, y), c);
     obstacles.add(newObst);
   }

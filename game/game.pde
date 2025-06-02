@@ -14,12 +14,6 @@ player hero = new player("hero", 100, 50, new PVector(width / 2, height / 2), ne
 int speed = 25;
 
 void setup() {
-  //size(1550, 875);
-  //for (ArrayList<room> r : fullMap) {
-  //  for (room er : r) {
-  //    er.p = hero;
-  //  }
-  //}
   size(900, 700);
   surface.setLocation(160, 90);
   
@@ -29,7 +23,7 @@ void setup() {
   fullMap.add(map);
   levelOneL.addObstacle(100, 100, 500, 200, 0);
   levelOneL.addObstacle(200, 200, 250, 500, 0);
-  levelOneL.addEnemy(10, 10);
+  levelOneL.addEnemy(10, 25);
   levelOneL.addEnemy(800, 600);
   levelOneR.addObstacle(200, 300, 300, 300, 0);
   levelOneR.addEnemy(650, 100);
@@ -42,9 +36,16 @@ void setup() {
   levelTwoL.addObstacle(600, 400, 600, 400, 0);
   levelTwoC.addObstacle(350, 200, 900, 800, 0);
   
-  for (ArrayList<room> r : fullMap) {
-    for (room er : r) {
-      er.p = hero;
+  for (ArrayList<room> rL : fullMap) {
+    for (room r : rL) {
+      r.p = hero;
+      r.addObstacle(width, 25, 0, 0, 0);
+      r.addObstacle(25, height / 2 - 50, width - 25, 0, 0);
+      r.addObstacle(25, height / 2 - 50, width - 25, height / 2 + 50, 0);
+      r.addObstacle(25, height / 2 - 50, 0, 0, 0);
+      r.addObstacle(25, height / 2, 0, height / 2 + 50, 0);
+      r.addObstacle(width / 2 - 50, 25, 0, height - 25, 0);
+      r.addObstacle(width / 2 - 50, 25, width / 2 + 50, height - 25, 0);
     }
   }
 }
@@ -52,7 +53,7 @@ void setup() {
 void draw() {
   load();
   textSize(30);
-  text("HP: " + hero.hp, 20, 50);
+  text("HP: " + hero.hp, 30, 50);
   
   for (enemy e : currentRoom.enemies) {
     textSize(15);
@@ -105,17 +106,21 @@ void keyPressed() {
     if (hero.pos.x >= width - 50) { // going right 
       if (currentRoomHindex != fullMap.get(currentRoomVindex).size() -1 && fullMap.get(currentRoomVindex).get(currentRoomHindex + 1) != null) {
         currentRoomHindex++;
-        hero.pos.x = 0;
+        hero.pos.x = 25;
       }
       currentRoom = fullMap.get(currentRoomVindex).get(currentRoomHindex);
+      currentRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
+      currentRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
     }
     
     else if (hero.pos.x <= 0 + 50) { // going left 
       if (currentRoomHindex != 0 && fullMap.get(currentRoomVindex).get(currentRoomHindex - 1) != null) {
         currentRoomHindex--;
-        hero.pos.x = width - 50;
+        hero.pos.x = width - 75;
       }
       currentRoom = fullMap.get(currentRoomVindex).get(currentRoomHindex);
+      currentRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
+      currentRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
     }
     
     //else if (hero.pos.y <= 0 + 50) { // going up
@@ -130,7 +135,7 @@ void keyPressed() {
       if (currentRoomVindex != fullMap.size() - 1 && fullMap.get(currentRoomVindex + 1).get(currentRoomHindex) != null) {
       //if (currentRoomVindex != fullMap.size() - 1 && fullMap.get(currentRoomVindex + 1).get(currentRoomHindex) != null) {
         currentRoomVindex++;
-        hero.pos.y = 0;
+        hero.pos.y = 25;
       }
       currentRoom = fullMap.get(currentRoomVindex).get(currentRoomHindex);
     }
