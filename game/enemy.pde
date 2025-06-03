@@ -56,15 +56,15 @@ class enemy extends entity {
       }
     }
   
-  float chance = (float) Math.random();
-  
-  if (chance < 0.8) {
-    dir = preferreDir;
-  } else {
-    dir = (int)(Math.random() * 4) + 1;
+    float chance = (float) Math.random();
+    
+    if (chance < 0.8) {
+      dir = preferreDir;
+    } else {
+      dir = (int)(Math.random() * 4) + 1;
+    }
+    
+    ticks++;
   }
-  
-  ticks++;
-}
   
 }

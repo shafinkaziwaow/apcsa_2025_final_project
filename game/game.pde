@@ -16,8 +16,9 @@ room levelTwoR = new room();
 room levelThreeL = new room();
 room levelThreeC = new room();
 room levelThreeR = new room();
-player hero = new player("hero", 100, 50, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>());
+player hero = new player("hero", 100, 50, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
 entity sword = new entity("playerSword", 0, 0, new PVector(hero.pos.x, hero.pos.y));
+entity projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y));
 int speed = 25;
 
 void setup() {
@@ -44,6 +45,7 @@ void setup() {
   fullMap.add(map2);
   levelTwoL.addObstacle(600, 400, 600, 400, 0);
   levelTwoL.addObstacle(25, 100, 0, height / 2 - 50, 0);
+  levelTwoL.addEnemy(700, 75);
   levelTwoC.addObstacle(350, 200, 150, 300, 0);
   levelTwoR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   
@@ -84,12 +86,15 @@ void draw() {
     textSize(30);
     text("HP: " + hero.hp, 35, 50);
     text("ATK cooldown: " + hero.atkCoolDown, 35, 90);
+    text("Level: " + hero.level, 35, 130);
+    text("EXP: " + hero.exp + " / " + hero.expToNextLevel,  35, 170);
     
     for (enemy e : currentRoom.enemies) {
       textSize(15);
       text("HP: " + e.hp, e.pos.x, e.pos.y - 10);
       if (e.hp <= 0) {
         currentRoom.enemies.remove(e);
+        hero.addExp(50);
         break;
       }
     }
@@ -103,6 +108,18 @@ void draw() {
       fill(0, 0, 255);
       rect(0, -2.5, 75, 5);
       pop();
+    }
+    
+    if (projectile.ticks > 0) {
+      projectile.move(currentRoom, 25);
+      for (enemy e : currentRoom.enemies) {
+        if (projectile.inRange(e, 25)) {
+          projectile.attack(e);
+        }
+      }
+      projectile.ticks--;
+      fill(0, 255, 0);
+      rect(projectile.pos.x, projectile.pos.y, 5, 5);
     }
     
     if (hero.hp <= 0) {
@@ -190,11 +207,24 @@ void keyPressed() {
     }
   }
   
+  if (key == 'k') {
+    entity projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y));
+    projectile.ticks = 100;
+  }
+  
   if (key == 'p') {
     hero.isPaused = !hero.isPaused;
     pauseMessage = "PAUSED" + "\n" + "\n";
     pauseMessage += "Controls: " + "\n";
     pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack"; 
+  }
+  
+  if (key == 'e') {
+    hero.isPaused = !hero.isPaused;
+    pauseMessage = "Inventory: "  + "\n";
+    for (int i = 0; i < hero.inventoryNames.size(); i++) {
+      pauseMessage += hero.inventoryNames.get(i) + " (" + hero.inventoryQuantities.get(i) + ")";
+    }
   }
 
 }

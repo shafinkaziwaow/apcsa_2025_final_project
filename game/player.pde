@@ -6,13 +6,30 @@ class player extends entity {
   ArrayList<String> inventoryNames;
   ArrayList<Integer> inventoryQuantities;
   boolean isPaused;
+  int exp; 
+  int expToNextLevel; 
+  int level;
   
-  public player(String name, int hp, int atk, PVector pos, ArrayList<String> inventoryNames, ArrayList<Integer> inventoryQuantities) {
+  public player(String name, int hp, int atk, PVector pos, ArrayList<String> inventoryNames, ArrayList<Integer> inventoryQuantities, int exp, int expToNextLevel, int level) {
     super(name, hp, atk, pos);
     this.inventoryNames = inventoryNames;
     this.inventoryQuantities = inventoryQuantities;
     this.atkCoolDown = 0;
     this.isPaused = false;
+    this.exp = exp;
+    this.expToNextLevel = expToNextLevel;
+    this.level = level;
+  }
+  
+  public void addExp(int expGained) {
+    if (expGained + exp >= expToNextLevel) {
+      level++;
+      atk *= 1.33; 
+      exp = expGained - exp;
+      expToNextLevel += 50;
+    } else {
+      exp += expGained;
+    }
   }
     
 }

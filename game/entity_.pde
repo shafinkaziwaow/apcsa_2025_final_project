@@ -1,4 +1,3 @@
-
 class entity {
 
   String name;
@@ -83,6 +82,23 @@ class entity {
     float closeX = (other.pos.x + 25) - (this.pos.x + 25);
     float closeY = (other.pos.y + 25) - (this.pos.y + 25);
     return closeX * closeX + closeY * closeY <= range * range;
+  }
+  
+  public void move(room r, int spd) {
+    if (!cannotGoes(r, this.dir)) {
+      if (dir == 1) {
+        pos.y -= spd;
+      }
+      if (dir == 2) {
+        pos.x += spd;
+      }
+      if (dir == 3) {
+        pos.y += spd;
+      }
+      if (dir == 4) {
+        pos.x -= spd;
+      }
+    }
   }
 
 }
