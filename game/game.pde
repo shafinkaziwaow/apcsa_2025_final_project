@@ -150,7 +150,7 @@ void keyPressed() {
       currentRoom = fullMap.get(vindex).get(hindex);
     }
     
-    else if (hero.pos.x <= 0 + 50) { // going left 
+    else if (hero.pos.x <= 0) { // going left 
       if (hindex != 0 && fullMap.get(vindex).get(hindex - 1) != null) {
         hindex--;
         hero.pos.x = width - 75;
