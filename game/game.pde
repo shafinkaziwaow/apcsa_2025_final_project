@@ -2,6 +2,8 @@ ArrayList<room> map = new ArrayList<room>();
 ArrayList<room> map2 = new ArrayList<room>();
 ArrayList<room> map3 = new ArrayList<room>();
 ArrayList<ArrayList<room>> fullMap = new ArrayList<ArrayList<room>>();
+int generalMessageDuration;
+String generalMessage;
 room currentRoom;
 String pauseMessage = "";
 float atkAng = 0;
@@ -24,6 +26,9 @@ int speed = 25;
 void setup() {
   size(900, 700);
   surface.setLocation(160, 90);
+  
+  hero.inventoryNames.add("Ammo");
+  hero.inventoryQuantities.add(0);
   
   map.add(levelOneL);
   map.add(levelOneC);
@@ -77,7 +82,7 @@ void setup() {
 void draw() {
   if (hero.isPaused) {
     background(0);
-    textSize(50);
+    textSize(35);
     fill(255);
     text(pauseMessage, 100, 100);
   } else {
@@ -93,10 +98,24 @@ void draw() {
       textSize(15);
       text("HP: " + e.hp, e.pos.x, e.pos.y - 10);
       if (e.hp <= 0) {
+        double chanceDropAmmo = Math.random();
+        if (chanceDropAmmo > 0.5) {
+          generalMessageDuration = 100;
+          int dropAmmount = (int) (Math.random() * 3) + 1;
+          generalMessage = e.name + " dropped " + dropAmmount + " ammo!";
+          hero.inventoryQuantities.set(0, dropAmmount);
+        }
         currentRoom.enemies.remove(e);
         hero.addExp(50);
         break;
       }
+    }
+    
+    if (generalMessageDuration > 0) {
+      textSize(30);
+      fill(0, 255, 0);
+      text(generalMessage, 300, 65);
+      generalMessageDuration--;
     }
     
     if (hero.atkCoolDown > 0) {
@@ -119,14 +138,14 @@ void draw() {
     if (projectile.ticks > 0) {
       projectile.move(currentRoom, 25);
       for (enemy e : currentRoom.enemies) {
-        if (projectile.inRange(e, 25) && !projectile.enemiesHit.contains(e)) {
+        if (projectile.inRange(e, 50) && !projectile.enemiesHit.contains(e)) {
           projectile.attack(e);
           projectile.enemiesHit.add(e);
         }
       }
       projectile.ticks--;
       fill(0, 255, 0);
-      rect(projectile.pos.x, projectile.pos.y, 5, 5);
+      rect(projectile.pos.x, projectile.pos.y, 10, 10);
     }
     
     if (hero.hp <= 0) {
@@ -212,7 +231,7 @@ void keyPressed() {
     sword.enemiesHit = new ArrayList<enemy>();
   }
   
-  if (key == 'k') {
+  if (key == 'k' && hero.inventoryQuantities.get(0) > 0) {
     projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), hero.dir);
     projectile.ticks = 50;
   }
@@ -221,7 +240,7 @@ void keyPressed() {
     hero.isPaused = !hero.isPaused;
     pauseMessage = "PAUSED" + "\n" + "\n";
     pauseMessage += "Controls: " + "\n";
-    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack"; 
+    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + "\n" + "K - ranged attack" + "\n" + "E - inventory"; 
   }
   
   if (key == 'e') {
