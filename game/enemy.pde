@@ -4,7 +4,7 @@ class enemy extends entity {
   int moveCoolDown;
   
   public enemy(String name, int hp, int atk, PVector pos, int range, int atkCoolDown) {
-    super(name, hp, atk, pos);
+    super(name, hp, atk, pos, 1);
     this.range = range;
     this.atkCoolDown = atkCoolDown;
     this.moveCoolDown = 10;

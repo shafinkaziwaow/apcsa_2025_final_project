@@ -11,7 +11,7 @@ class player extends entity {
   int level;
   
   public player(String name, int hp, int atk, PVector pos, ArrayList<String> inventoryNames, ArrayList<Integer> inventoryQuantities, int exp, int expToNextLevel, int level) {
-    super(name, hp, atk, pos);
+    super(name, hp, atk, pos, 1);
     this.inventoryNames = inventoryNames;
     this.inventoryQuantities = inventoryQuantities;
     this.atkCoolDown = 0;

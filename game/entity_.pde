@@ -7,16 +7,15 @@ class entity {
   int ticks;
   int dir;
   int atkCoolDown;
-
+  ArrayList<enemy> enemiesHit = new ArrayList<enemy>();
   
-  
-  public entity(String name, int hp, int atk, PVector pos) {
+  public entity(String name, int hp, int atk, PVector pos, int dir) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
     this.pos = pos;
     this.ticks = 0;
-    this.dir = 1;
+    this.dir = dir;
     this.atkCoolDown = 60;
   }
   

@@ -17,8 +17,8 @@ room levelThreeL = new room();
 room levelThreeC = new room();
 room levelThreeR = new room();
 player hero = new player("hero", 100, 50, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
-entity sword = new entity("playerSword", 0, 0, new PVector(hero.pos.x, hero.pos.y));
-entity projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y));
+entity sword = new entity("playerSword", 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
+entity projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
 int speed = 25;
 
 void setup() {
@@ -108,13 +108,20 @@ void draw() {
       fill(0, 0, 255);
       rect(0, -2.5, 75, 5);
       pop();
+      for (enemy e : currentRoom.enemies) {
+        if (sword.inRange(e, 75) && !sword.enemiesHit.contains(e)) {
+          hero.attack(e);
+          sword.enemiesHit.add(e);
+        }
+      }
     }
     
     if (projectile.ticks > 0) {
       projectile.move(currentRoom, 25);
       for (enemy e : currentRoom.enemies) {
-        if (projectile.inRange(e, 25)) {
+        if (projectile.inRange(e, 25) && !projectile.enemiesHit.contains(e)) {
           projectile.attack(e);
+          projectile.enemiesHit.add(e);
         }
       }
       projectile.ticks--;
@@ -142,15 +149,19 @@ void load() {
 void keyPressed() {
   // movement 
   if (key == 's' && !hero.cannotGoes(currentRoom, 3)) {
+    hero.dir = 3;
     hero.pos.y += speed;
   }
   if (key == 'w' && !hero.cannotGoes(currentRoom, 1)) {
+    hero.dir = 1;
     hero.pos.y -= speed;
   }
   if (key == 'a' && !hero.cannotGoes(currentRoom, 4)) {
+    hero.dir = 4;
     hero.pos.x -= speed;
   }
   if (key == 'd' && !hero.cannotGoes(currentRoom, 2)) {
+    hero.dir = 2;
     hero.pos.x += speed;
   }
   
@@ -198,18 +209,12 @@ void keyPressed() {
   
   if (key == 'j' && hero.atkCoolDown == 0) {
     hero.atkCoolDown = 30;
-    for (enemy e : currentRoom.enemies) {
-      if (sword.inRange(e, 75)) {
-        hero.attack(e);
-        //hero.atkCoolDown = 30;
-        break;
-      }
-    }
+    sword.enemiesHit = new ArrayList<enemy>();
   }
   
   if (key == 'k') {
-    entity projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y));
-    projectile.ticks = 100;
+    projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), hero.dir);
+    projectile.ticks = 50;
   }
   
   if (key == 'p') {
