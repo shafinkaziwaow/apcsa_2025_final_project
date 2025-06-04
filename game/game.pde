@@ -7,8 +7,8 @@ String generalMessage;
 room currentRoom;
 String pauseMessage = "";
 float atkAng = 0;
-int hindex = 2; // horizontal index
-int vindex = 1; // vertical index
+int hindex = 1; // horizontal index
+int vindex = 0; // vertical index
 room levelOneL = new room();
 room levelOneC = new room();
 room levelOneR = new room();
@@ -31,7 +31,7 @@ void setup() {
   hero.inventoryNames.add("Health Potions");
   hero.inventoryQuantities.add(0);
   hero.inventoryQuantities.add(0);
-  hero.spd = 50;
+  //hero.spd = 50;
 
   
   map.add(levelOneL);
@@ -55,15 +55,15 @@ void setup() {
   levelTwoL.addObstacle(25, 100, 0, height / 2 - 50, 0);
   levelTwoL.addEnemy(700, 75);
   levelTwoC.addObstacle(350, 200, 150, 300, 0);
-  levelTwoC.addEnemy(50, 50);
-  levelTwoC.addEnemy(600, 75);
-  levelTwoC.addEnemy(675, 600); 
+  levelTwoC.addEnemy(50, 50, "enemy", 250, 50, 2);
+  levelTwoC.addEnemy(600, 75, "enemy", 250, 50, 3);
+  levelTwoC.addEnemy(675, 600, "enemy", 350, 50, 2); 
   levelTwoR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelTwoR.addObstacle(50, 550, 175, 0, 0);
-  levelTwoR.addEnemy(75, 25);
-  levelTwoR.addEnemy(100, 125);
-  levelTwoR.addEnemy(75, 225);
-  levelTwoR.addEnemy(750, 600, "distaction man", 200, 25, 4);
+  levelTwoR.addEnemy(75, 25, "enemy", 150, 35, 3);
+  levelTwoR.addEnemy(100, 125, "enemy", 200, 35, 3);
+  levelTwoR.addEnemy(75, 225, "enemy", 150, 35, 3);
+  levelTwoR.addEnemy(750, 600, "distaction man", 500, 25, 4);
   
   map3.add(levelThreeL);
   map3.add(levelThreeC);
@@ -75,7 +75,7 @@ void setup() {
   levelThreeR.addObstacle(0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   
-  currentRoom = levelTwoR;
+  currentRoom = levelOneC;
 
 
   

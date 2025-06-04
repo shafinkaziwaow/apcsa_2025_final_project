@@ -74,7 +74,7 @@ class room {
   }
   
   public void addEnemy(int x, int y) {
-    enemy newEnemy = new enemy("enemy", 75, 75, 50, new PVector(x, y), 3, 50, 30);
+    enemy newEnemy = new enemy("enemy", 100, 100, 50, new PVector(x, y), 3, 50, 30);
     enemies.add(newEnemy);
   }
   

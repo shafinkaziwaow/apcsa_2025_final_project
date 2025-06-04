@@ -25,7 +25,8 @@ class player extends entity {
     if (expGained + exp >= expToNextLevel) {
       level++;
       atk *= 1.33; 
-      maxHp += 25;
+      maxHP += 25;
+      hp = maxHP;
       exp = exp + expGained - expToNextLevel;
       expToNextLevel += 50;
     } else {
