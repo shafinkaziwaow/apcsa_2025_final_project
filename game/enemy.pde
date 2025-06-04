@@ -71,9 +71,9 @@ class enemy extends entity {
     }
 
     float chance = (float) Math.random();
-    if (chance < 0.8) { // 80% chance to chase
+    if (chance < 0.7) { // 70% chance to chase
         dir = preferreDir;
-    //} else { // 20% chance for random
+    //} else { // 30% chance for random
     //    //dir = (int)(Math.random() * 4) + 1;
     //}
   }
