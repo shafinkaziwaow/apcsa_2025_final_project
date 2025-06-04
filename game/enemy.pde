@@ -12,7 +12,7 @@ class enemy extends entity {
   
     public void move(player p, room r) {
       if (!cannotGoes(r, dir)) {
-        if (ticks % 10 == 0) {
+        if (ticks % 5 == 0) {
           newDir(p, r);
         } 
           if (dir == 1) {
@@ -73,9 +73,10 @@ class enemy extends entity {
     float chance = (float) Math.random();
     if (chance < 0.8) { // 80% chance to chase
         dir = preferreDir;
-    } else { // 20% chance for random
-        dir = (int)(Math.random() * 4) + 1;
-    }
+    //} else { // 20% chance for random
+    //    //dir = (int)(Math.random() * 4) + 1;
+    //}
+  }
     ticks++; 
   }
 
