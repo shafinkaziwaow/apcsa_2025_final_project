@@ -19,8 +19,9 @@ room levelThreeL = new room();
 room levelThreeC = new room();
 room levelThreeR = new room();
 player hero = new player("hero", 100, 100, 50, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
-entity sword = new entity("playerSword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
+entity sword = new entity("sword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
 entity projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
+entity bomb = new entity("bomb", 0, 0, hero.atk * 2, new PVector(hero.pos.x, hero.pos.y), 1);
 //int speed = 25;
 
 void setup() {
@@ -28,9 +29,12 @@ void setup() {
   surface.setLocation(160, 90);
   
   hero.inventoryNames.add("Ammo");
+  hero.inventoryNames.add("Bombs");
   hero.inventoryNames.add("Health Potions");
   hero.inventoryQuantities.add(0);
   hero.inventoryQuantities.add(0);
+  hero.inventoryQuantities.add(0);
+
   //hero.spd = 50;
 
   
@@ -119,17 +123,27 @@ void draw() {
         String message = "";
         double chanceDropAmmo = Math.random();
         double chanceDropHPot = Math.random();
+        double chanceDropBomb = Math.random();
+        
         //ammo
         if (chanceDropAmmo < 0.6) {
-          int dropAmmount = (int) (Math.random() * 3) + 1;
+          int dropAmmount = (int) (Math.random() * 4) + 1;
           message += e.name + " dropped " + dropAmmount + " ammo!" + "\n";
-          hero.inventoryQuantities.set(0, dropAmmount);
+          hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) + dropAmmount);
         }
+        
+        // bomb
+        if (chanceDropBomb < 0.25) {
+          int dropAmmount = (int) (Math.random() * 3) + 1;
+          message += e.name + " dropped " + dropAmmount + " bombs!" + "\n";
+          hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) + dropAmmount);
+        }
+        
         // hp potion 
         if (chanceDropHPot < 0.34) { 
           int dropAmmount = (int) (Math.random() * 2) + 1;
           message += e.name + " dropped " + dropAmmount + " Health Potions!" + "\n";
-          hero.inventoryQuantities.set(1, dropAmmount);
+          hero.inventoryQuantities.set(2, hero.inventoryQuantities.get(2) + dropAmmount);
         }
         
         if (message.length() > 0) { // if you actually have something to report, overwrite generalMessage 
@@ -140,6 +154,7 @@ void draw() {
         hero.addExp(50);
         break;
       }
+      
     }
     
     // put a general message on the screen
@@ -157,7 +172,7 @@ void draw() {
       push();
       translate(hero.pos.x + 25, hero.pos.y + 25);
       rotate(atkAng);
-      fill(0, 0, 255);
+      fill(0, 255, 0);
       rect(0, -2.5, 75, 5);
       pop();
       for (enemy e : currentRoom.enemies) {
@@ -181,6 +196,24 @@ void draw() {
       fill(0, 255, 0);
       rect(projectile.pos.x, projectile.pos.y, 10, 10);
     }
+    
+    // bomb
+    if (bomb.ticks > 0) {
+      bomb.move(currentRoom);
+      for (enemy e : currentRoom.enemies) {
+        if (bomb.inRange(e, 50)) {
+          bomb.attack(e);
+          bomb.ticks = 0;
+        } 
+      }
+      bomb.ticks--;
+      fill(0, 255, 0);
+      rect(bomb.pos.x, bomb.pos.y, 25, 25);
+      if (bomb.ticks <= 0 && bomb.inRange(hero, 50)) {
+          bomb.attack(hero); 
+      }
+    }
+   
     
     // hero dying
     if (hero.hp <= 0) {
@@ -272,16 +305,23 @@ void keyPressed() {
     hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) - 1);
   }
   
-  if (key == 'h' && hero.inventoryQuantities.get(1) > 0) {
-    hero.hp = Math.min(hero.hp + 50, hero.maxHP);
+  if (key == 'l' && hero.inventoryQuantities.get(1) > 0) {
+    bomb = new entity("bomb", 0, 0, hero.atk * 2, new PVector(hero.pos.x, hero.pos.y), hero.dir);
+    bomb.ticks = 30;
+    bomb.spd = 10;
     hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) - 1);
+  }
+  
+  if (key == 'h' && hero.inventoryQuantities.get(2) > 0) {
+    hero.hp = Math.min(hero.hp + 50, hero.maxHP);
+    hero.inventoryQuantities.set(2, hero.inventoryQuantities.get(2) - 1);
   }
   
   if (key == 'p') {
     hero.isPaused = !hero.isPaused;
     pauseMessage = "PAUSED" + "\n" + "\n";
     pauseMessage += "Controls: " + "\n";
-    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + "\n" + "K - ranged attack" + "\n" + "H - health potion" + "\n" + "E - inventory"; 
+    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + "\n" + "K - ranged attack" + "\n" + "L - bomb" + "\n" + "H - health potion" + "\n" + "E - inventory"; 
   }
   
   if (key == 'e') {
