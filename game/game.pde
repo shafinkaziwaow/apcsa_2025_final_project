@@ -7,8 +7,8 @@ String generalMessage;
 room currentRoom;
 String pauseMessage = "";
 float atkAng = 0;
-int hindex = 1; // horizontal index
-int vindex = 0; // vertical index
+int hindex = 2; // horizontal index
+int vindex = 1; // vertical index
 room levelOneL = new room();
 room levelOneC = new room();
 room levelOneR = new room();
@@ -18,17 +18,21 @@ room levelTwoR = new room();
 room levelThreeL = new room();
 room levelThreeC = new room();
 room levelThreeR = new room();
-player hero = new player("hero", 100, 50, new PVector(width / 2, height / 2), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
-entity sword = new entity("playerSword", 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
-entity projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
-int speed = 25;
+player hero = new player("hero", 100, 100, 50, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
+entity sword = new entity("playerSword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
+entity projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
+//int speed = 25;
 
 void setup() {
   size(900, 700);
   surface.setLocation(160, 90);
   
   hero.inventoryNames.add("Ammo");
+  hero.inventoryNames.add("Health Potions");
   hero.inventoryQuantities.add(0);
+  hero.inventoryQuantities.add(0);
+  hero.spd = 50;
+
   
   map.add(levelOneL);
   map.add(levelOneC);
@@ -39,10 +43,9 @@ void setup() {
   levelOneL.addObstacle(25, 100, 0, height / 2 - 50, 0);
   levelOneL.addEnemy(50, 100);
   levelOneL.addEnemy(800, 600);
-  levelOneR.addObstacle(200, 300, 300, 300, 0);
+  levelOneR.addObstacle(200, 300, 325, 200, 0);
   levelOneR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelOneR.addEnemy(650, 100);
-  currentRoom = levelOneC;
   
   map2.add(levelTwoL);
   map2.add(levelTwoC);
@@ -52,7 +55,15 @@ void setup() {
   levelTwoL.addObstacle(25, 100, 0, height / 2 - 50, 0);
   levelTwoL.addEnemy(700, 75);
   levelTwoC.addObstacle(350, 200, 150, 300, 0);
+  levelTwoC.addEnemy(50, 50);
+  levelTwoC.addEnemy(600, 75);
+  levelTwoC.addEnemy(675, 600); 
   levelTwoR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
+  levelTwoR.addObstacle(50, 550, 175, 0, 0);
+  levelTwoR.addEnemy(75, 25);
+  levelTwoR.addEnemy(100, 125);
+  levelTwoR.addEnemy(75, 225);
+  levelTwoR.addEnemy(750, 600, "distaction man", 200, 25, 4);
   
   map3.add(levelThreeL);
   map3.add(levelThreeC);
@@ -63,6 +74,9 @@ void setup() {
   levelThreeC.addObstacle(0);
   levelThreeR.addObstacle(0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
+  
+  currentRoom = levelTwoR;
+
 
   
   for (ArrayList<room> rL : fullMap) {
@@ -80,6 +94,7 @@ void setup() {
 }
 
 void draw() {
+  //if paused
   if (hero.isPaused) {
     background(0);
     textSize(35);
@@ -87,23 +102,39 @@ void draw() {
     text(pauseMessage, 100, 100);
   } else {
     load();
+    
+    //hero stuff
     sword.pos = hero.pos;
     textSize(30);
-    text("HP: " + hero.hp, 35, 50);
+    text("HP: " + hero.hp + " / " + hero.maxHP, 35, 50);
     text("ATK cooldown: " + hero.atkCoolDown, 35, 90);
     text("Level: " + hero.level, 35, 130);
     text("EXP: " + hero.exp + " / " + hero.expToNextLevel,  35, 170);
     
+    // handle enemies dying and put their info on the screen
     for (enemy e : currentRoom.enemies) {
       textSize(15);
       text("HP: " + e.hp, e.pos.x, e.pos.y - 10);
       if (e.hp <= 0) {
+        String message = "";
         double chanceDropAmmo = Math.random();
-        if (chanceDropAmmo > 0.5) {
-          generalMessageDuration = 100;
+        double chanceDropHPot = Math.random();
+        //ammo
+        if (chanceDropAmmo < 0.6) {
           int dropAmmount = (int) (Math.random() * 3) + 1;
-          generalMessage = e.name + " dropped " + dropAmmount + " ammo!";
+          message += e.name + " dropped " + dropAmmount + " ammo!" + "\n";
           hero.inventoryQuantities.set(0, dropAmmount);
+        }
+        // hp potion 
+        if (chanceDropHPot < 0.34) { 
+          int dropAmmount = (int) (Math.random() * 2) + 1;
+          message += e.name + " dropped " + dropAmmount + " Health Potions!" + "\n";
+          hero.inventoryQuantities.set(1, dropAmmount);
+        }
+        
+        if (message.length() > 0) { // if you actually have something to report, overwrite generalMessage 
+          generalMessage = message;
+          generalMessageDuration = 100;
         }
         currentRoom.enemies.remove(e);
         hero.addExp(50);
@@ -111,6 +142,7 @@ void draw() {
       }
     }
     
+    // put a general message on the screen
     if (generalMessageDuration > 0) {
       textSize(30);
       fill(0, 255, 0);
@@ -118,6 +150,7 @@ void draw() {
       generalMessageDuration--;
     }
     
+    // melee attack
     if (hero.atkCoolDown > 0) {
       hero.atkCoolDown--;
       atkAng -= 0.25;
@@ -135,8 +168,9 @@ void draw() {
       }
     }
     
+    // ranged attack
     if (projectile.ticks > 0) {
-      projectile.move(currentRoom, 25);
+      projectile.move(currentRoom);
       for (enemy e : currentRoom.enemies) {
         if (projectile.inRange(e, 50) && !projectile.enemiesHit.contains(e)) {
           projectile.attack(e);
@@ -148,6 +182,7 @@ void draw() {
       rect(projectile.pos.x, projectile.pos.y, 10, 10);
     }
     
+    // hero dying
     if (hero.hp <= 0) {
       background(0);
       textSize(100);
@@ -169,19 +204,19 @@ void keyPressed() {
   // movement 
   if (key == 's' && !hero.cannotGoes(currentRoom, 3)) {
     hero.dir = 3;
-    hero.pos.y += speed;
+    hero.pos.y += hero.spd;
   }
   if (key == 'w' && !hero.cannotGoes(currentRoom, 1)) {
     hero.dir = 1;
-    hero.pos.y -= speed;
+    hero.pos.y -= hero.spd;
   }
   if (key == 'a' && !hero.cannotGoes(currentRoom, 4)) {
     hero.dir = 4;
-    hero.pos.x -= speed;
+    hero.pos.x -= hero.spd;
   }
   if (key == 'd' && !hero.cannotGoes(currentRoom, 2)) {
     hero.dir = 2;
-    hero.pos.x += speed;
+    hero.pos.x += hero.spd;
   }
   
   // interaction (namely with borders for now)
@@ -232,23 +267,30 @@ void keyPressed() {
   }
   
   if (key == 'k' && hero.inventoryQuantities.get(0) > 0) {
-    projectile = new entity("projectile", 100000, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), hero.dir);
+    projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), hero.dir);
     projectile.ticks = 50;
+    hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) - 1);
+  }
+  
+  if (key == 'h' && hero.inventoryQuantities.get(1) > 0) {
+    hero.hp = Math.min(hero.hp + 50, hero.maxHP);
+    hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) - 1);
   }
   
   if (key == 'p') {
     hero.isPaused = !hero.isPaused;
     pauseMessage = "PAUSED" + "\n" + "\n";
     pauseMessage += "Controls: " + "\n";
-    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + "\n" + "K - ranged attack" + "\n" + "E - inventory"; 
+    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + "\n" + "K - ranged attack" + "\n" + "H - health potion" + "\n" + "E - inventory"; 
   }
   
   if (key == 'e') {
     hero.isPaused = !hero.isPaused;
     pauseMessage = "Inventory: "  + "\n";
     for (int i = 0; i < hero.inventoryNames.size(); i++) {
-      pauseMessage += hero.inventoryNames.get(i) + " (" + hero.inventoryQuantities.get(i) + ")";
+      pauseMessage += hero.inventoryNames.get(i) + " (" + hero.inventoryQuantities.get(i) + ")" + "\n"; 
     }
   }
+  
 
 }

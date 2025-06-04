@@ -10,8 +10,8 @@ class player extends entity {
   int expToNextLevel; 
   int level;
   
-  public player(String name, int hp, int atk, PVector pos, ArrayList<String> inventoryNames, ArrayList<Integer> inventoryQuantities, int exp, int expToNextLevel, int level) {
-    super(name, hp, atk, pos, 1);
+  public player(String name, int hp, int maxHP, int atk, PVector pos, ArrayList<String> inventoryNames, ArrayList<Integer> inventoryQuantities, int exp, int expToNextLevel, int level) {
+    super(name, hp, maxHP, atk, pos, 1);
     this.inventoryNames = inventoryNames;
     this.inventoryQuantities = inventoryQuantities;
     this.atkCoolDown = 0;
@@ -25,7 +25,8 @@ class player extends entity {
     if (expGained + exp >= expToNextLevel) {
       level++;
       atk *= 1.33; 
-      exp = expGained - exp;
+      maxHp += 25;
+      exp = exp + expGained - expToNextLevel;
       expToNextLevel += 50;
     } else {
       exp += expGained;

@@ -53,7 +53,7 @@ class room {
         } else {
           if (e.moveCoolDown == 0) {
             if (!e.cannotGoes(this, e.dir)) {
-              e.move(25, p, this);
+              e.move(p, this);
             } else {
               e.newDir(p, this);
             }
@@ -68,13 +68,13 @@ class room {
     }
   }
   
-  public void addEnemy(int x, int y, String name, int hp, int atk) {
-    enemy newEnemy = new enemy(name, hp, atk, new PVector(x, y), 50, 30);
+  public void addEnemy(int x, int y, String name, int hp, int atk, int dir) {
+    enemy newEnemy = new enemy(name, hp, hp, atk, new PVector(x, y), dir, 50, 30);
     enemies.add(newEnemy);
   }
   
   public void addEnemy(int x, int y) {
-    enemy newEnemy = new enemy("enemy", 75, 50, new PVector(x, y), 50, 30);
+    enemy newEnemy = new enemy("enemy", 75, 75, 50, new PVector(x, y), 3, 50, 30);
     enemies.add(newEnemy);
   }
   
