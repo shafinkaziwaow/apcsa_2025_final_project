@@ -1,4 +1,4 @@
-int gameState = 1; // 0 = start screen, 1 = playing 
+int gameState = 0; // 0 = start screen, 1 = playing 
 int selectChoice = 0;
 ArrayList<room> map = new ArrayList<room>();
 ArrayList<room> map2 = new ArrayList<room>();
@@ -9,8 +9,8 @@ String generalMessage;
 room currentRoom;
 String pauseMessage = "";
 float atkAng = 0;
-int hindex = 0; // horizontal index
-int vindex = 1; // vertical index
+int hindex = 1; // horizontal index
+int vindex = 0; // vertical index
 room levelOneL = new room();
 room levelOneC = new room();
 room levelOneR = new room();
@@ -24,6 +24,8 @@ player hero = new player("hero", 100, 100, 34, new PVector(425, 325), new ArrayL
 entity sword = new entity("sword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
 entity projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
 entity bomb = new entity("bomb", 0, 0, hero.atk * 2, new PVector(hero.pos.x, hero.pos.y), 1);
+entity haven = new entity("haven", 0, 0, 0, new PVector(425, 325), 0);
+
 //int speed = 25;
 
 void setup() {
@@ -37,7 +39,7 @@ void setup() {
   hero.inventoryQuantities.add(0);
   hero.inventoryQuantities.add(0);
 
-  hero.spd = 50;
+  //hero.spd = 50;
 
   
   map.add(levelOneL);
@@ -58,13 +60,17 @@ void setup() {
   map2.add(levelTwoR);
   fullMap.add(map2);
   levelTwoL.addObstacle(600, 400, 600, 400, 0);
-  levelTwoL.addObstacle(100, 475, 300, 0, 0);
+  levelTwoL.addObstacle(100, 300, 300, 225, 0);
+  levelTwoL.addObstacle(500, 75, 400, 225, 0);
   levelTwoL.addObstacle(25, 100, 0, height / 2 - 50, 0);
   levelTwoL.addEnemy(700, 75, "enemy", 150, 35, 4);
   levelTwoL.addEnemy(100, 500, "enemy", 200, 50, 1);
+  levelTwoL.addEnemy(800, 325, "guard", 350, 75, 1);
   levelTwoC.addObstacle(350, 200, 150, 300, 0);
+  levelTwoC.addObstacle(300, 200, 600, 0, 0);
+  levelTwoC.addObstacle(100, 125, 25, 550, 0);
   levelTwoC.addEnemy(50, 50, "enemy", 250, 50, 2);
-  levelTwoC.addEnemy(600, 75, "enemy", 250, 50, 3);
+  levelTwoC.addEnemy(600, 225, "enemy", 250, 50, 3);
   levelTwoC.addEnemy(675, 600, "enemy", 350, 50, 2); 
   levelTwoR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelTwoR.addObstacle(50, 550, 175, 0, 0);
@@ -78,12 +84,9 @@ void setup() {
   map3.add(levelThreeR);
   fullMap.add(map3);
   levelThreeL.addObstacle(25, 100, 0, height / 2 - 50, 0);
-  levelThreeC.addObstacle(0);
-  levelThreeC.addObstacle(0);
-  levelThreeR.addObstacle(0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   
-  currentRoom = levelTwoL;
+  currentRoom = levelOneC;
 
 
   
@@ -118,13 +121,7 @@ void draw() {
     text("Press P for controls", 350, 400);
     text("Press O for objective", 350, 430);
   } else {
-  //if paused
-  //if (hero.isPaused) {
-  //  background(0);
-  //  textSize(35);
-  //  fill(255);
-  //  text(pauseMessage, 100, 100);
-  //} else {
+    
     load();
     
     //hero stuff
@@ -134,6 +131,24 @@ void draw() {
     text("ATK cooldown: " + hero.atkCoolDown, 35, 90);
     text("Level: " + hero.level, 35, 130);
     text("EXP: " + hero.exp + " / " + hero.expToNextLevel,  35, 170);
+    
+    //haven 
+    if (hindex == 2 && vindex == 2) {
+      fill(0, 255, 0);
+      rect(haven.pos.x, haven.pos.y, 50, 50);
+      if (hero.inRange(haven, 50) && key == 'i') {
+        haven.pos = new PVector(100000, 10000);
+        generalMessage = "You found a box of supplies!" + "\n" + 
+        "You picked up 3 Health Potions!" + "\n" + 
+        "You picked up 5 ammo!" + "\n" + 
+        "You picked up 3 bombs!";
+        generalMessageDuration = 100;
+        hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) + 5);
+        hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) + 3);
+        hero.inventoryQuantities.set(2, hero.inventoryQuantities.get(2) + 3);
+      }
+    }
+    
     
     // handle enemies dying and put their info on the screen
     for (enemy e : currentRoom.enemies) {
