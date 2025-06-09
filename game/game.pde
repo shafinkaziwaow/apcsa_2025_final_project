@@ -51,6 +51,7 @@ void setup() {
   levelOneL.addObstacle(25, 100, 0, height / 2 - 50, 0);
   levelOneL.addEnemy(50, 100);
   levelOneL.addEnemy(800, 600);
+  levelOneC.addBoss(100, 100, "test", 100, 100, 25, 1);
   levelOneR.addObstacle(200, 300, 325, 200, 0);
   levelOneR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelOneR.addEnemy(650, 100);
@@ -192,6 +193,22 @@ void draw() {
       
     }
     
+    // handle bosses 
+    for (boss b : currentRoom.bosses) {
+      textSize(20);
+      text("HP: " + b.hp, b.pos.x, b.pos.y - 10);
+      if (b.hp <= 0) {
+        currentRoom.bosses.remove(b);
+      }
+      if (b.bossProjectile.ticks > 0) {
+        projectile.move(currentRoom);
+        if (b.bossProjectile.inRange(hero, 50)) {
+          b.bossProjectile.attack(hero);
+        }
+      }
+      
+    }
+    
     // put a general message on the screen
     if (generalMessageDuration > 0) {
       textSize(30);
@@ -216,6 +233,12 @@ void draw() {
           sword.enemiesHit.add(e);
         }
       }
+      for (boss b : currentRoom.bosses) {
+        if (sword.inRange(b, 75) && !sword.enemiesHit.contains(b)) {
+          hero.attack(b);
+          sword.enemiesHit.add(b);
+        }
+      }
     }
     
     // ranged attack
@@ -231,6 +254,7 @@ void draw() {
       fill(0, 255, 0);
       rect(projectile.pos.x, projectile.pos.y, 10, 10);
     }
+    
     
     // bomb
     if (bomb.ticks > 0) {
@@ -265,6 +289,7 @@ void load() {
   background(90);
   currentRoom.placeObstacles();
   currentRoom.placeEnemies();
+  currentRoom.placeBosses();
   fill(255);
   rect(hero.pos.x, hero.pos.y, 50, 50);
 }

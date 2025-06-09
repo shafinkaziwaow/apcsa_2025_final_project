@@ -44,35 +44,11 @@ class room {
       fill(255, 0, 0);
       rect(e.pos.x, e.pos.y, 50, 50);
       behavior(e);
-    //  if (e.cannotGoes(this, e.dir)) {
-    //    e.newDir(p, this);
-    //  } else { 
-    //    if (e.inRange(p, e.range)) {
-    //      if (e.atkCoolDown > 0) {
-    //        e.atkCoolDown--;
-    //      } else {
-    //        e.attack(p);
-    //        e.atkCoolDown = 100;
-    //      }
-    //    } else {
-    //      if (e.moveCoolDown == 0) {
-    //        if (!e.cannotGoes(this, e.dir)) {
-    //          e.move(p, this);
-    //        } else {
-    //          e.newDir(p, this);
-    //        }
-    //        e.moveCoolDown = 10;
-    //      }
-    //        else {
-    //        e.moveCoolDown--;
-    //      }
-    //    }
-    //  }
     }
   }
   
   public void behavior(enemy e) {
-        if (e.cannotGoes(this, e.dir)) {
+      if (e.cannotGoes(this, e.dir)) {
         e.newDir(p, this);
       } else { 
         if (e.inRange(p, e.range)) {
@@ -113,12 +89,46 @@ class room {
     bosses.add(newBoss);
   }
   
-  //public void placeBosses() {
-  //  for (boss b : bosses) {
-  //    stroke(0);
-  //    fill(255, 0, 0); 
-  //    rect(b.pos.x, b.pos.y, 50, 50);
-  //  } if (b.cannotGoes(
-  //}
+  public void placeBosses() {
+    for (boss b : bosses) {
+      stroke(0);
+      fill(255, 0, 0); 
+      rect(b.pos.x, b.pos.y, 50, 50);
+      if (b.cannotGoes(this, b.dir)) {
+        b.newDir(p, this);
+        b.bossProjectile.dir = b.dir;
+      } else {
+        if (b.atkCoolDown > 0) {
+          b.atkCoolDown--;
+        } else {
+          b.atkCoolDown = 40;
+          if (b.inRange(p, 75)) {
+            b.attack(p);
+          } else {
+            b.bossProjectile = new entity("projectile", 0, 0, 0, new PVector(b.pos.x, b.pos.y), 1);
+            b.bossProjectile.ticks = 50;
+          }
+        }
+            atkAng -= 0.25;
+            push();
+            translate(b.pos.x + 25, b.pos.y + 25);
+            rotate(atkAng);
+            fill(0);
+            rect(0, -2.5, 66, 5);
+            pop();
+       if (b.moveCoolDown == 0) {
+         if (!b.cannotGoes(this, b.dir)) {
+           b.move(p, this);
+         } else {
+           b.newDir(p, this);
+           b.bossProjectile.dir = b.dir;
+         }
+         b.moveCoolDown = 10;
+       } else {
+         b.moveCoolDown--;
+       } 
+      }
+    } 
+  }
   
 }
