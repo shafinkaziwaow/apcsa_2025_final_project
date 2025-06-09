@@ -1,4 +1,4 @@
-int gameState = 0; // 0 = start screen, 1 = playing 
+int gameState = 1; // 0 = start screen, 1 = playing 
 int selectChoice = 0;
 ArrayList<room> map = new ArrayList<room>();
 ArrayList<room> map2 = new ArrayList<room>();
@@ -9,8 +9,8 @@ String generalMessage;
 room currentRoom;
 String pauseMessage = "";
 float atkAng = 0;
-int hindex = 1; // horizontal index
-int vindex = 0; // vertical index
+int hindex = 0; // horizontal index
+int vindex = 1; // vertical index
 room levelOneL = new room();
 room levelOneC = new room();
 room levelOneR = new room();
@@ -20,7 +20,7 @@ room levelTwoR = new room();
 room levelThreeL = new room();
 room levelThreeC = new room();
 room levelThreeR = new room();
-player hero = new player("hero", 100, 100, 50, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
+player hero = new player("hero", 100, 100, 34, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
 entity sword = new entity("sword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
 entity projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
 entity bomb = new entity("bomb", 0, 0, hero.atk * 2, new PVector(hero.pos.x, hero.pos.y), 1);
@@ -37,7 +37,7 @@ void setup() {
   hero.inventoryQuantities.add(0);
   hero.inventoryQuantities.add(0);
 
-  //hero.spd = 50;
+  hero.spd = 50;
 
   
   map.add(levelOneL);
@@ -58,8 +58,10 @@ void setup() {
   map2.add(levelTwoR);
   fullMap.add(map2);
   levelTwoL.addObstacle(600, 400, 600, 400, 0);
+  levelTwoL.addObstacle(100, 475, 300, 0, 0);
   levelTwoL.addObstacle(25, 100, 0, height / 2 - 50, 0);
-  levelTwoL.addEnemy(700, 75);
+  levelTwoL.addEnemy(700, 75, "enemy", 150, 35, 4);
+  levelTwoL.addEnemy(100, 500, "enemy", 200, 50, 1);
   levelTwoC.addObstacle(350, 200, 150, 300, 0);
   levelTwoC.addEnemy(50, 50, "enemy", 250, 50, 2);
   levelTwoC.addEnemy(600, 75, "enemy", 250, 50, 3);
@@ -81,7 +83,7 @@ void setup() {
   levelThreeR.addObstacle(0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   
-  currentRoom = levelOneC;
+  currentRoom = levelTwoL;
 
 
   
