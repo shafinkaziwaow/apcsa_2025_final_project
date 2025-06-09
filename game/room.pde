@@ -5,16 +5,19 @@ class room {
   int height = 700;
   public ArrayList<obstacle> obstacles; // coordinates of any obstacles in the room 
   public ArrayList<enemy> enemies; // coordinates of any enemies in the room 
+  public ArrayList<boss> bosses;
   player p;
   
   public room () {
     this.obstacles = new ArrayList<obstacle>();
     this.enemies = new  ArrayList<enemy>();
+    this.bosses = new ArrayList<boss>();
   }
   
-  public room(ArrayList<obstacle> obstacles, ArrayList<enemy> enemies) {
+  public room(ArrayList<obstacle> obstacles, ArrayList<enemy> enemies, ArrayList<boss> bosses) {
     this.obstacles = obstacles;
     this.enemies = enemies;
+    this.bosses = bosses;
   }
   
   public void placeObstacles() {
@@ -76,6 +79,11 @@ class room {
   public void addEnemy(int x, int y) {
     enemy newEnemy = new enemy("enemy", 100, 100, 25, new PVector(x, y), 3, 50, 30);
     enemies.add(newEnemy);
+  }
+  
+  public void addBoss(int x, int y, String name, int hp, int maxHP, int atk, int dir) {
+    boss newBoss = new boss(name, hp, maxHP, atk, new PVector(x, y), dir, 50, 30);
+    bosses.add(newBoss);
   }
   
 }
