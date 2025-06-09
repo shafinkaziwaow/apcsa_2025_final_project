@@ -1,3 +1,5 @@
+int gameState = 0; // 0 = start screen, 1 = playing 
+int selectChoice = 0;
 ArrayList<room> map = new ArrayList<room>();
 ArrayList<room> map2 = new ArrayList<room>();
 ArrayList<room> map3 = new ArrayList<room>();
@@ -98,13 +100,29 @@ void setup() {
 }
 
 void draw() {
-  //if paused
   if (hero.isPaused) {
-    background(0);
+    background(90);
     textSize(35);
     fill(255);
     text(pauseMessage, 100, 100);
   } else {
+  if (gameState == 0) {
+    background(90);
+    fill(255);
+    textSize(40);
+    text("The Binding of Processing", 230, 300);
+    textSize(20);
+    text("Press ENTER to start", 350, 370);
+    text("Press P for controls", 350, 400);
+    text("Press O for objective", 350, 430);
+  } else {
+  //if paused
+  //if (hero.isPaused) {
+  //  background(0);
+  //  textSize(35);
+  //  fill(255);
+  //  text(pauseMessage, 100, 100);
+  //} else {
     load();
     
     //hero stuff
@@ -223,10 +241,11 @@ void draw() {
       text("You Died!", 250, 370);
     }
   }
+  }
 }
 
 void load() {
-  background(125);
+  background(90);
   currentRoom.placeObstacles();
   currentRoom.placeEnemies();
   fill(255);
@@ -234,6 +253,26 @@ void load() {
 }
 
 void keyPressed() {
+  if (gameState == 0) {
+    if (keyCode == ENTER) {
+      gameState = 1;
+    }
+    if (key == 'p') {
+      hero.isPaused = !hero.isPaused;
+      pauseMessage = "Controls: " + "\n";
+      pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + 
+      "\n" + "K - ranged attack" + "\n" + "L - bomb" + "\n" + "H - health potion" + "\n" + "E - inventory" + "\n" + "P - pause";
+    } 
+    if (key == 'o') {
+      hero.isPaused = !hero.isPaused;
+      pauseMessage = "You are a hero trapped in a mysterious" + "\n" +
+      "dungeon. Every time you enter a room to the" + "\n" + 
+      "side, the walls close in on you. The only way" + "\n" + 
+      "forward from there is downwards. Descend" + "\n" + 
+      "the labyrinth, fighting your way to the end" + "\n" + 
+      "for your freedom.";
+    }
+  } else {
   // movement 
   if (key == 's' && !hero.cannotGoes(currentRoom, 3)) {
     hero.dir = 3;
@@ -321,7 +360,8 @@ void keyPressed() {
     hero.isPaused = !hero.isPaused;
     pauseMessage = "PAUSED" + "\n" + "\n";
     pauseMessage += "Controls: " + "\n";
-    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + "\n" + "K - ranged attack" + "\n" + "L - bomb" + "\n" + "H - health potion" + "\n" + "E - inventory"; 
+    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + 
+    "\n" + "K - ranged attack" + "\n" + "L - bomb" + "\n" + "H - health potion" + "\n" + "E - inventory" + "\n" + "P - pause";
   }
   
   if (key == 'e') {
@@ -331,6 +371,6 @@ void keyPressed() {
       pauseMessage += hero.inventoryNames.get(i) + " (" + hero.inventoryQuantities.get(i) + ")" + "\n"; 
     }
   }
+  }
   
-
 }
