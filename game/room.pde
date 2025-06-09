@@ -43,7 +43,36 @@ class room {
       stroke(0);
       fill(255, 0, 0);
       rect(e.pos.x, e.pos.y, 50, 50);
-      if (e.cannotGoes(this, e.dir)) {
+      behavior(e);
+    //  if (e.cannotGoes(this, e.dir)) {
+    //    e.newDir(p, this);
+    //  } else { 
+    //    if (e.inRange(p, e.range)) {
+    //      if (e.atkCoolDown > 0) {
+    //        e.atkCoolDown--;
+    //      } else {
+    //        e.attack(p);
+    //        e.atkCoolDown = 100;
+    //      }
+    //    } else {
+    //      if (e.moveCoolDown == 0) {
+    //        if (!e.cannotGoes(this, e.dir)) {
+    //          e.move(p, this);
+    //        } else {
+    //          e.newDir(p, this);
+    //        }
+    //        e.moveCoolDown = 10;
+    //      }
+    //        else {
+    //        e.moveCoolDown--;
+    //      }
+    //    }
+    //  }
+    }
+  }
+  
+  public void behavior(enemy e) {
+        if (e.cannotGoes(this, e.dir)) {
         e.newDir(p, this);
       } else { 
         if (e.inRange(p, e.range)) {
@@ -62,13 +91,11 @@ class room {
             }
             e.moveCoolDown = 10;
           }
-            
             else {
             e.moveCoolDown--;
           }
         }
       }
-    }
   }
   
   public void addEnemy(int x, int y, String name, int hp, int atk, int dir) {
@@ -85,5 +112,13 @@ class room {
     boss newBoss = new boss(name, hp, maxHP, atk, new PVector(x, y), dir, 50, 30);
     bosses.add(newBoss);
   }
+  
+  //public void placeBosses() {
+  //  for (boss b : bosses) {
+  //    stroke(0);
+  //    fill(255, 0, 0); 
+  //    rect(b.pos.x, b.pos.y, 50, 50);
+  //  } if (b.cannotGoes(
+  //}
   
 }
