@@ -121,6 +121,20 @@ void setup() {
   levelThreeL.addEnemy(300, 400);
   levelThreeL.addEnemy(200, 500);
   levelThreeL.addEnemy(100, 600);
+  levelThreeC.addObstacle(300, 300, width / 2 - 150, height / 2 - 150, 0);
+  levelThreeC.addObstacle(150, 150, 25, 25, 0);
+  levelThreeC.addObstacle(150, 150, 25, height - 175, 0);
+  levelThreeC.addObstacle(150, 150, width - 175, 25, 0);
+  levelThreeC.addObstacle(150, 150, width - 175, height - 175, 0);
+  levelThreeC.addEnemy(200, 50, "enemy", 300, 50, 2); 
+  levelThreeC.addEnemy(width - 250, 50, "enemy", 300, 50, 4); 
+  levelThreeC.addEnemy(75, height - 250, "enemy", 300, 50, 1); 
+  levelThreeC.addEnemy(75, height - 500, "enemy", 300, 50, 3); 
+  levelThreeC.addEnemy(width - 150, height - 250, "enemy", 300, 50, 1); 
+  levelThreeC.addEnemy(width - 150, height - 500, "enemy", 300, 50, 3); 
+  levelThreeC.addEnemy(width / 2 - 25, height - 50, "enemy", 400, 50, 1);
+  
+  
   levelThreeR.addObstacle(75, 10000, 550, 0, 0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelThreeR.addBoss(400, 500, "chest guardian", 200, 200, 25, 1);
@@ -129,7 +143,7 @@ void setup() {
   finalRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
   finalRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   
-  currentRoom = levelOneC;
+  currentRoom = levelThreeC;
   hindex = 1;
   vindex = 0;
 
