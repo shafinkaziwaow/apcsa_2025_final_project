@@ -46,7 +46,7 @@ void setup() {
   levelThreeC = new room();
   levelThreeR = new room();
   finalRoom = new room();
-  hero = new player("hero", 1000000000, 100, 340000000, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
+  hero = new player("hero", 100, 100, 34, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
   sword = new entity("sword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
   projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
   bomb = new entity("bomb", 0, 0, hero.atk * 2, new PVector(hero.pos.x, hero.pos.y), 1);
@@ -109,6 +109,18 @@ void setup() {
   map3.add(finalRoom);
   fullMap.add(map3);
   levelThreeL.addObstacle(25, 100, 0, height / 2 - 50, 0);
+  levelThreeL.addEnemy(100, 100);
+  levelThreeL.addEnemy(200, 200);
+  levelThreeL.addEnemy(300, 300);
+  levelThreeL.addEnemy(400, 400);
+  levelThreeL.addEnemy(500, 500);
+  levelThreeL.addEnemy(600, 600);
+  levelThreeL.addEnemy(600, 100);
+  levelThreeL.addEnemy(500, 200);
+  levelThreeL.addEnemy(400, 300);
+  levelThreeL.addEnemy(300, 400);
+  levelThreeL.addEnemy(200, 500);
+  levelThreeL.addEnemy(100, 600);
   levelThreeR.addObstacle(75, 10000, 550, 0, 0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelThreeR.addBoss(400, 500, "chest guardian", 200, 200, 25, 1);
@@ -117,7 +129,7 @@ void setup() {
   finalRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
   finalRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   
-  currentRoom = finalRoom;
+  currentRoom = levelOneC;
   hindex = 1;
   vindex = 0;
 
@@ -174,14 +186,14 @@ void draw() {
       }
       if (hero.inRange(chest, 50) && key == 'i') {
         chest.pos = new PVector(100000, 10000);
-        generalMessage = "You found a box of supplies!" + "\n" + 
-        "You picked up 3 Health Potions!" + "\n" + 
-        "You picked up 5 ammo!" + "\n" + 
-        "You picked up 3 bombs!";
+        generalMessage = "You found a chest full of supplies!" + "\n" + 
+        "You picked up 5 Health Potions!" + "\n" + 
+        "You picked up 10 ammo!" + "\n" + 
+        "You picked up 5 bombs!";
         generalMessageDuration = 100;
-        hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) + 5);
-        hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) + 3);
-        hero.inventoryQuantities.set(2, hero.inventoryQuantities.get(2) + 3);
+        hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) + 10);
+        hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) + 5);
+        hero.inventoryQuantities.set(2, hero.inventoryQuantities.get(2) + 5);
       }
     }
     
