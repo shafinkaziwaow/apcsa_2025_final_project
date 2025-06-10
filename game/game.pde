@@ -1,34 +1,57 @@
-int gameState = 0; // 0 = start screen, 1 = playing 
-int selectChoice = 0;
-ArrayList<room> map = new ArrayList<room>();
-ArrayList<room> map2 = new ArrayList<room>();
-ArrayList<room> map3 = new ArrayList<room>();
-ArrayList<ArrayList<room>> fullMap = new ArrayList<ArrayList<room>>();
+int gameState; // 0 = start screen, 1 = playing 
+ArrayList<room> map;
+ArrayList<room> map2;
+ArrayList<room> map3;
+ArrayList<ArrayList<room>> fullMap;
 int generalMessageDuration;
 String generalMessage;
 room currentRoom;
-String pauseMessage = "";
-float atkAng = 0;
-int hindex = 1; // horizontal index
-int vindex = 0; // vertical index
-room levelOneL = new room();
-room levelOneC = new room();
-room levelOneR = new room();
-room levelTwoL = new room();
-room levelTwoC = new room();
-room levelTwoR = new room();
-room levelThreeL = new room();
-room levelThreeC = new room();
-room levelThreeR = new room();
-player hero = new player("hero", 100, 100, 34, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
-entity sword = new entity("sword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
-entity projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
-entity bomb = new entity("bomb", 0, 0, hero.atk * 2, new PVector(hero.pos.x, hero.pos.y), 1);
-entity haven = new entity("haven", 0, 0, 0, new PVector(425, 325), 0);
+String pauseMessage;
+float atkAng;
+int hindex; // horizontal index
+int vindex; // vertical index
+room levelOneL;
+room levelOneC;
+room levelOneR;
+room levelTwoL;
+room levelTwoC;
+room levelTwoR;
+room levelThreeL;
+room levelThreeC;
+room levelThreeR;
+room finalRoom;
+player hero;
+entity sword;
+entity projectile;
+entity bomb;
+entity chest;
 
 //int speed = 25;
 
 void setup() {
+  gameState = 0;
+  map = new ArrayList<room>();
+  map2 = new ArrayList<room>();
+  map3 = new ArrayList<room>();
+  fullMap = new ArrayList<ArrayList<room>>();
+  pauseMessage = "";
+  atkAng = 0;
+  levelOneL = new room();
+  levelOneC = new room();
+  levelOneR = new room();
+  levelTwoL = new room();
+  levelTwoC = new room();
+  levelTwoR = new room();
+  levelThreeL = new room();
+  levelThreeC = new room();
+  levelThreeR = new room();
+  finalRoom = new room();
+  hero = new player("hero", 1000000000, 100, 340000000, new PVector(425, 325), new ArrayList<String>(), new ArrayList<Integer>(), 0, 100, 0);
+  sword = new entity("sword", 0, 0, 0, new PVector(hero.pos.x, hero.pos.y), 1);
+  projectile = new entity("projectile", 0, 0, hero.atk / 2, new PVector(hero.pos.x, hero.pos.y), 1);
+  bomb = new entity("bomb", 0, 0, hero.atk * 2, new PVector(hero.pos.x, hero.pos.y), 1);
+  chest = new entity("chest", 0, 0, 0, new PVector(800, 325), 0);
+  
   size(900, 700);
   surface.setLocation(160, 90);
   
@@ -51,7 +74,7 @@ void setup() {
   levelOneL.addObstacle(25, 100, 0, height / 2 - 50, 0);
   levelOneL.addEnemy(50, 100);
   levelOneL.addEnemy(800, 600);
-  levelOneC.addBoss(100, 100, "test", 100, 100, 25, 1);
+  //levelOneC.addBoss(100, 100, "test", 100, 100, 25, 1);
   levelOneR.addObstacle(200, 300, 325, 200, 0);
   levelOneR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelOneR.addEnemy(650, 100);
@@ -83,11 +106,20 @@ void setup() {
   map3.add(levelThreeL);
   map3.add(levelThreeC);
   map3.add(levelThreeR);
+  map3.add(finalRoom);
   fullMap.add(map3);
   levelThreeL.addObstacle(25, 100, 0, height / 2 - 50, 0);
+  levelThreeR.addObstacle(75, 10000, 550, 0, 0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
+  levelThreeR.addBoss(400, 500, "chest guardian", 200, 200, 25, 1);
   
-  currentRoom = levelOneC;
+  finalRoom.addObstacle(100, 25, width / 2 - 50, height - 25, 0);
+  finalRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
+  finalRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
+  
+  currentRoom = finalRoom;
+  hindex = 1;
+  vindex = 0;
 
 
   
@@ -133,12 +165,15 @@ void draw() {
     text("Level: " + hero.level, 35, 130);
     text("EXP: " + hero.exp + " / " + hero.expToNextLevel,  35, 170);
     
-    //haven 
+    //chest 
     if (hindex == 2 && vindex == 2) {
       fill(0, 255, 0);
-      rect(haven.pos.x, haven.pos.y, 50, 50);
-      if (hero.inRange(haven, 50) && key == 'i') {
-        haven.pos = new PVector(100000, 10000);
+      rect(chest.pos.x, chest.pos.y, 50, 50);
+      if (currentRoom.bosses.isEmpty()) {
+        currentRoom.obstacles.get(0).pos = new PVector(100000, 1000000);
+      }
+      if (hero.inRange(chest, 50) && key == 'i') {
+        chest.pos = new PVector(100000, 10000);
         generalMessage = "You found a box of supplies!" + "\n" + 
         "You picked up 3 Health Potions!" + "\n" + 
         "You picked up 5 ammo!" + "\n" + 
@@ -195,18 +230,22 @@ void draw() {
     
     // handle bosses 
     for (boss b : currentRoom.bosses) {
-      textSize(20);
-      text("HP: " + b.hp, b.pos.x, b.pos.y - 10);
       if (b.hp <= 0) {
         currentRoom.bosses.remove(b);
+        break;
       }
+      textSize(20);
+      fill(255);
+      text("HP: " + b.hp, b.pos.x, b.pos.y - 10);
       if (b.bossProjectile.ticks > 0) {
-        projectile.move(currentRoom);
-        if (b.bossProjectile.inRange(hero, 50)) {
+        b.bossProjectile.move(currentRoom);
+        if (b.bossProjectile.inRange(hero, 50) && !b.bossProjectile.enemiesHit.contains(hero)) {
           b.bossProjectile.attack(hero);
+          b.bossProjectile.enemiesHit.add(hero);
         }
+        fill(255, 0, 0);
+        rect(b.bossProjectile.pos.x, b.bossProjectile.pos.y, 10, 10);
       }
-      
     }
     
     // put a general message on the screen
@@ -279,7 +318,14 @@ void draw() {
       background(0);
       textSize(100);
       fill(255, 0, 0);
-      text("You Died!", 250, 370);
+      text("You Died!", 250, 340);
+      textSize(40);
+      fill(255);
+      text("Try Again?", 350, 450);
+      text("[ENTER]", 367, 500);
+      if (keyCode == ENTER) {
+        setup();
+      }
     }
   }
   }
@@ -365,19 +411,28 @@ void keyPressed() {
     //} 
     
     else if (hero.pos.y >= height - 50) { // going down
-      if (vindex != fullMap.size() - 1 && fullMap.get(vindex + 1).get(hindex) != null) {
+      boolean areWeDone = false;
+      if (vindex == 2) {
+        vindex++;
+        hero.pos.y = 25;
+        areWeDone = true;
+      } else if (vindex != fullMap.size() - 1 && fullMap.get(vindex + 1).get(hindex) != null) {
       //if (vindex != fullMap.size() - 1 && fullMap.get(vindex + 1).get(hindex) != null) {
         vindex++;
         hero.pos.y = 25;
       }
-      currentRoom = fullMap.get(vindex).get(hindex);
+      if (areWeDone) {
+        currentRoom = finalRoom;
+      } else {
+        currentRoom = fullMap.get(vindex).get(hindex);
+      }
     }
     load();
   }
   
   if (key == 'j' && hero.atkCoolDown == 0) {
     hero.atkCoolDown = 30;
-    sword.enemiesHit = new ArrayList<enemy>();
+    sword.enemiesHit = new ArrayList<entity>();
   }
   
   if (key == 'k' && hero.inventoryQuantities.get(0) > 0) {

@@ -19,7 +19,7 @@ class obstacle {
     this.w = (int) random(400) + 100;
     this.h = (int) random(400) + 100;
     this.pos = pos;
-    this.c = c;
+    this.c = color(c);
   }
   
   public obstacle(color c) {

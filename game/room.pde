@@ -105,7 +105,7 @@ class room {
           if (b.inRange(p, 75)) {
             b.attack(p);
           } else {
-            b.bossProjectile = new entity("projectile", 0, 0, 0, new PVector(b.pos.x, b.pos.y), 1);
+            b.bossProjectile = new entity("projectile", 0, 0, b.atk / 4, new PVector(b.pos.x, b.pos.y), b.dir);
             b.bossProjectile.ticks = 50;
           }
         }

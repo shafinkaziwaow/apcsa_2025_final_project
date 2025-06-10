@@ -8,7 +8,7 @@ class entity {
   int ticks;
   int dir;
   int atkCoolDown;
-  ArrayList<enemy> enemiesHit = new ArrayList<enemy>();
+  ArrayList<entity> enemiesHit = new ArrayList<entity>();
   int spd;
   
   public entity(String name, int hp, int maxHP, int atk, PVector pos, int dir) {
