@@ -161,12 +161,9 @@ void setup() {
   finalRoom.addBoss(75, 175, "boss 1", 450, 250, 50, 1);
   finalRoom.addBoss(800, 475, "boss 2", 450, 250, 50, 1);
   
-  currentRoom = levelThreeR;
-  hindex = 2;
-  vindex = 2;
-  
-  hero.inventoryQuantities.set(0, 10000000);
-  hero.inventoryQuantities.set(1, 10000000);
+  currentRoom = levelOneC;
+  hindex = 1;
+  vindex = 0;
 
 
   
@@ -225,7 +222,7 @@ void draw() {
       if (currentRoom.bosses.isEmpty()) {
         currentRoom.obstacles.get(0).pos = new PVector(100000, 1000000);
       }
-      if (hero.inRange(chest, 50) && key == 'i') {
+      if (hero.inRange(chest, 75) && key == 'i') {
         chest.pos = new PVector(100000, 10000);
         currentRoom.obstacles.get(1).pos = new PVector(10000, 1000000);
         generalMessage = "You found a chest full of supplies!" + "\n" + 

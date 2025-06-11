@@ -19,7 +19,7 @@ class room {
     this.enemy1 = loadImage("2D Pixel Dungeon Asset Pack/Character_animation/monsters_idle/skull/v2/skull_v2_1.png");
     this.enemy2 = loadImage("2D Pixel Dungeon Asset Pack/Character_animation/monsters_idle/skeleton2/v2/skeleton2_v2_1.png");
     this.axe = loadImage("Pack Icons 2/scytheR.png");
-    this.dagger = loadImage("Pack Icons2/knifeR.png");
+    this.dagger = loadImage("Pack Icons 2/knifeR.png");
     this.spriteTicks = 0;
     this.prevSpr = 1;
   }
