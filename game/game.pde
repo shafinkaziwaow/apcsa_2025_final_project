@@ -121,27 +121,33 @@ void setup() {
   levelThreeL.addEnemy(300, 400, "enemy", 150, 33, 1);
   levelThreeL.addEnemy(200, 500, "enemy", 150, 33, 1);
   levelThreeL.addEnemy(100, 600, "enemy", 150, 33, 1);
-  levelThreeC.addObstacle(300, 300, width / 2 - 150, height / 2 - 150, 0);
+  levelThreeC.addObstacle(100, 100, width / 2 - 150, height / 2 - 150, 0);
+  levelThreeC.addObstacle(100, 100, width / 2 + 50, height / 2 - 150, 0);
+  levelThreeC.addObstacle(100, 100, width / 2 - 150, height / 2 + 50, 0);
+  levelThreeC.addObstacle(100, 100, width / 2 + 50, height / 2 + 50, 0);
   levelThreeC.addObstacle(150, 150, 25, 25, 0);
   levelThreeC.addObstacle(150, 150, 25, height - 175, 0);
   levelThreeC.addObstacle(150, 150, width - 175, 25, 0);
   levelThreeC.addObstacle(150, 150, width - 175, height - 175, 0);
-  levelThreeC.addEnemy(200, 50, "enemy", 300, 50, 2); 
-  levelThreeC.addEnemy(width - 250, 50, "enemy", 200, 50, 4); 
-  levelThreeC.addEnemy(75, height - 250, "enemy", 200, 50, 1); 
-  levelThreeC.addEnemy(75, height - 500, "enemy", 200, 50, 3); 
-  levelThreeC.addEnemy(width - 150, height - 250, "enemy", 200, 50, 1); 
-  levelThreeC.addEnemy(width - 150, height - 500, "enemy", 200, 50, 3); 
+  levelThreeC.addEnemy(200, 50, "enemy", 200, 33, 2); 
+  levelThreeC.addEnemy(width - 250, 50, "enemy", 150, 33, 4); 
+  levelThreeC.addEnemy(75, height - 250, "enemy", 200, 33, 1); 
+  levelThreeC.addEnemy(75, height - 500, "enemy", 150, 33, 3); 
+  levelThreeC.addEnemy(width - 150, height - 250, "enemy", 200, 33, 1); 
+  levelThreeC.addEnemy(width - 150, height - 500, "enemy", 150, 33, 3); 
   levelThreeC.addEnemy(width / 2 - 25, height - 75, "enemy", 400, 50, 1);
-  
-  
   levelThreeR.addObstacle(75, 10000, 550, 0, 0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
-  levelThreeR.addBoss(400, 500, "chest guardian", 200, 200, 25, 1);
+  levelThreeR.addBoss(400, 500, "chest guardian", 250, 250, 25, 1);
   
   finalRoom.addObstacle(100, 25, width / 2 - 50, height - 25, 0);
   finalRoom.addObstacle(25, 100, 0, height / 2 - 50, 0);
   finalRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
+  finalRoom.addObstacle(150, 150, 150, 150, 0);
+  finalRoom.addObstacle(200, 200, 550, 400, 0);
+  finalRoom.addEnemy(width / 2 - 25, height / 2 - 25, "enemy", 900, 45, 1);
+  finalRoom.addBoss(75, 175, "boss 1", 450, 250, 50, 1);
+  finalRoom.addBoss(800, 475, "boss 2", 450, 250, 50, 1);
   
   currentRoom = levelOneC;
   hindex = 1;
@@ -169,6 +175,9 @@ void draw() {
     textSize(35);
     fill(255);
     text(pauseMessage, 100, 100);
+    if (vindex == 4 && keyCode == ENTER) {
+      setup();
+    }
   } else {
   if (gameState == 0) {
     background(90);
@@ -211,6 +220,10 @@ void draw() {
       }
     }
     
+    if (finalRoom.enemies.isEmpty() && finalRoom.bosses.isEmpty()) {
+      finalRoom.obstacles.get(0).pos = new PVector(100000, 1000000);
+    }
+    
     
     // handle enemies dying and put their info on the screen
     for (enemy e : currentRoom.enemies) {
@@ -248,7 +261,8 @@ void draw() {
           generalMessageDuration = 100;
         }
         currentRoom.enemies.remove(e);
-        hero.addExp(50);
+        int expToAdd = (int) (Math.random() * 26) + 50;
+        hero.addExp(expToAdd);
         break;
       }
       
@@ -257,6 +271,7 @@ void draw() {
     // handle bosses 
     for (boss b : currentRoom.bosses) {
       if (b.hp <= 0) {
+        hero.addExp(100);
         currentRoom.bosses.remove(b);
         break;
       }
@@ -315,6 +330,12 @@ void draw() {
           projectile.enemiesHit.add(e);
         }
       }
+      for (boss b : currentRoom.bosses) {
+        if (projectile.inRange(b, 50) && !projectile.enemiesHit.contains(b)) {
+          projectile.attack(b);
+          projectile.enemiesHit.add(b);
+        }
+      }
       projectile.ticks--;
       fill(0, 255, 0);
       rect(projectile.pos.x, projectile.pos.y, 10, 10);
@@ -330,10 +351,16 @@ void draw() {
           bomb.ticks = 0;
         } 
       }
+      for (boss b : currentRoom.bosses) {
+        if (bomb.inRange(b, 100)) {
+          bomb.attack(b);
+          bomb.ticks = 0;
+        } 
+      }
       bomb.ticks--;
       fill(0, 255, 0);
       rect(bomb.pos.x, bomb.pos.y, 25, 25);
-      if (bomb.ticks <= 0 && bomb.inRange(hero, 50)) {
+      if (bomb.ticks <= 0 && bomb.inRange(hero, 25)) {
           bomb.attack(hero); 
       }
     }
@@ -437,17 +464,23 @@ void keyPressed() {
     //} 
     
     else if (hero.pos.y >= height - 50) { // going down
-      boolean areWeDone = false;
-      if (vindex == 2) {
+      boolean finaling = false;
+      if (vindex >= 2) {
         vindex++;
         hero.pos.y = 25;
-        areWeDone = true;
+        finaling = true;
       } else if (vindex != fullMap.size() - 1 && fullMap.get(vindex + 1).get(hindex) != null) {
       //if (vindex != fullMap.size() - 1 && fullMap.get(vindex + 1).get(hindex) != null) {
         vindex++;
         hero.pos.y = 25;
       }
-      if (areWeDone) {
+      if (vindex == 4) {
+        hero.isPaused = true;
+        pauseMessage = "You did it!" + "\n" + 
+        "You fought all the way through the" + "\n" + 
+        "dungeon and freed yourself." + "\n" + "Congratulations!" + "\n" + "\n" + "\n" + 
+        "Play Again?" + "\n" + "[ENTER]";
+      } else if (finaling) {
         currentRoom = finalRoom;
       } else {
         currentRoom = fullMap.get(vindex).get(hindex);

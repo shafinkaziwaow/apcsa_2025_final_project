@@ -101,7 +101,7 @@ class room {
         if (b.atkCoolDown > 0) {
           b.atkCoolDown--;
         } else {
-          b.atkCoolDown = 40;
+          b.atkCoolDown = 70;
           if (b.inRange(p, 75)) {
             b.attack(p);
           } else {
