@@ -25,7 +25,7 @@ entity sword;
 entity projectile;
 entity bomb;
 entity chest;
-PImage gurt, bro, swordSpr, arrow, farrow, axe, chestSpr;
+PImage gurt, bro, swordSpr, arrow, farrow, chestSpr;
 int sprX, sprY;
 
 //int speed = 25;
@@ -36,7 +36,7 @@ void setup() {
   swordSpr = loadImage("Pack Icons 2/SwordRotate90.png");
   arrow = loadImage("Pack Icons 2/arRotated.png");
   farrow = loadImage("Pack Icons 2/flArRotated.png");
-  chestSpr = loadImage("Assets.png");
+  chestSpr = loadImage("Dungeon_Tileset.png");
   sprX = 37;
   sprY = 2;
   
@@ -303,9 +303,20 @@ void draw() {
           b.bossProjectile.attack(hero);
           b.bossProjectile.enemiesHit.add(hero);
         }
-        fill(255, 0, 0);
-        rect(b.bossProjectile.pos.x, b.bossProjectile.pos.y, 10, 10);
-      }
+        push();
+        translate(b.bossProjectile.pos.x + 25, b.bossProjectile.pos.y + 25);
+        if (b.bossProjectile.dir == 1) {
+          rotate(-HALF_PI);
+        }
+        if (b.bossProjectile.dir == 3) {
+          rotate(HALF_PI);
+        }
+        if (b.bossProjectile.dir == 4) {
+          rotate(PI);
+        }
+        copy(currentRoom.dagger, 0, 0, 48, 48, 0, 0, 50, 50);
+        pop();
+        }
     }
     
     // put a general message on the screen
@@ -323,8 +334,6 @@ void draw() {
       push();
       translate(hero.pos.x + 25, hero.pos.y + 25);
       rotate(atkAng);
-      //fill(0, 255, 0);
-      //rect(0, -2.5, 75, 5);
       copy(swordSpr, 0, 0, 32, 32, 20, 0, 50, 50);
       pop();
       for (enemy e : currentRoom.enemies) {

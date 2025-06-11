@@ -6,8 +6,7 @@ class room {
   public ArrayList<obstacle> obstacles; // coordinates of any obstacles in the room 
   public ArrayList<enemy> enemies; // coordinates of any enemies in the room 
   public ArrayList<boss> bosses;
-  PImage wall;
-  PImage enemy1;
+  PImage wall, enemy1, enemy2, axe, dagger;
   int spriteTicks; 
   int prevSpr;
   player p;
@@ -18,6 +17,9 @@ class room {
     this.bosses = new ArrayList<boss>();
     this.wall = loadImage("walltest.jpg");
     this.enemy1 = loadImage("2D Pixel Dungeon Asset Pack/Character_animation/monsters_idle/skull/v2/skull_v2_1.png");
+    this.enemy2 = loadImage("2D Pixel Dungeon Asset Pack/Character_animation/monsters_idle/skeleton2/v2/skeleton2_v2_1.png");
+    this.axe = loadImage("Pack Icons 2/scytheR.png");
+    this.dagger = loadImage("Pack Icons2/knifeR.png");
     this.spriteTicks = 0;
     this.prevSpr = 1;
   }
@@ -53,8 +55,8 @@ class room {
   
   public void placeEnemies() {
     for (enemy e : enemies) {
-      stroke(0);
-      fill(255, 0, 0);
+      //stroke(0);
+      //fill(255, 0, 0);
       //rect(e.pos.x, e.pos.y, 50, 50);
       if (this.spriteTicks % 50 == 0) {
         prevSpr = (prevSpr + 1) % 4 + 1;
@@ -109,9 +111,20 @@ class room {
   
   public void placeBosses() {
     for (boss b : bosses) {
-      stroke(0);
-      fill(255, 0, 0); 
-      rect(b.pos.x, b.pos.y, 50, 50);
+      //stroke(0);
+      //fill(255, 0, 0); 
+      //rect(b.pos.x, b.pos.y, 50, 50);
+      if (this.spriteTicks % 50 == 0) {
+        prevSpr = (prevSpr + 1) % 4 + 1;
+        enemy2 = loadImage("2D Pixel Dungeon Asset Pack/Character_animation/monsters_idle/skeleton2/v2/skeleton2_v2_" + prevSpr + ".png");
+      }
+      push();
+      translate(b.pos.x + 40, b.pos.y + 40);
+      if (b.dir == 4) {
+        scale(-1, 1);
+      }
+      copy(enemy2, 0, 0, 16, 16, -40, -40, 60, 60);
+      pop();
       if (b.cannotGoes(this, b.dir)) {
         b.newDir(p, this);
         b.bossProjectile.dir = b.dir;
@@ -127,13 +140,14 @@ class room {
             b.bossProjectile.ticks = 50;
           }
         }
-            atkAng -= 0.25;
-            push();
-            translate(b.pos.x + 25, b.pos.y + 25);
-            rotate(atkAng);
-            fill(0);
-            rect(0, -2.5, 66, 5);
-            pop();
+        atkAng -= 0.2;
+        push();
+        translate(b.pos.x + 25, b.pos.y + 25);
+        rotate(atkAng);
+        //fill(0);
+        //rect(0, -2.5, 66, 5);
+        copy(axe, 0, 0, 32, 32, 20, 0, 50, 50);
+        pop();
        if (b.moveCoolDown == 0) {
          if (!b.cannotGoes(this, b.dir)) {
            b.move(p, this);
