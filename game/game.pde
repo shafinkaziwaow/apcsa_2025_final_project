@@ -25,10 +25,17 @@ entity sword;
 entity projectile;
 entity bomb;
 entity chest;
+PImage gurt, bro, swordSpr, arrow, farrow, axe;
+int sprX, sprY;
 
 //int speed = 25;
 
 void setup() {
+  gurt = loadImage("mainlevbuildtest3.jpg");
+  bro = loadImage("Human-Soldier-Red.png");
+  sprX = 37;
+  sprY = 2;
+  
   gameState = 0;
   map = new ArrayList<room>();
   map2 = new ArrayList<room>();
@@ -191,6 +198,8 @@ void draw() {
   } else {
     
     load();
+    
+    currentRoom.spriteTicks++;
     
     //hero stuff
     sword.pos = hero.pos;
@@ -385,12 +394,22 @@ void draw() {
 }
 
 void load() {
-  background(90);
+  //background(74, 61, 67);
+  background(74, 67, 70);
+  
+  for (int i = 0; i <= 900 / 31; i++) {
+    for (int j = 0; j <= 700 / 31; j++) {
+      image(gurt, i * 31, j * 31);
+    }
+  }
+  
+
   currentRoom.placeObstacles();
   currentRoom.placeEnemies();
   currentRoom.placeBosses();
   fill(255);
-  rect(hero.pos.x, hero.pos.y, 50, 50);
+  //rect(hero.pos.x, hero.pos.y, 50, 50);
+  copy(bro, sprX, sprY, 21, 21, (int) hero.pos.x, (int) hero.pos.y, 50, 50);
 }
 
 void keyPressed() {
@@ -416,18 +435,23 @@ void keyPressed() {
   } else {
   // movement 
   if (key == 's' && !hero.cannotGoes(currentRoom, 3)) {
+    sprX = 37;
+    sprY = 2;
     hero.dir = 3;
     hero.pos.y += hero.spd;
   }
   if (key == 'w' && !hero.cannotGoes(currentRoom, 1)) {
+    sprY = 130;
     hero.dir = 1;
     hero.pos.y -= hero.spd;
   }
   if (key == 'a' && !hero.cannotGoes(currentRoom, 4)) {
+    sprY = 194;
     hero.dir = 4;
     hero.pos.x -= hero.spd;
   }
   if (key == 'd' && !hero.cannotGoes(currentRoom, 2)) {
+    sprY = 66;
     hero.dir = 2;
     hero.pos.x += hero.spd;
   }

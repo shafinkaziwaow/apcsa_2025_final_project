@@ -6,12 +6,20 @@ class room {
   public ArrayList<obstacle> obstacles; // coordinates of any obstacles in the room 
   public ArrayList<enemy> enemies; // coordinates of any enemies in the room 
   public ArrayList<boss> bosses;
+  PImage wall;
+  PImage enemy1;
+  int spriteTicks; 
+  int prevSpr;
   player p;
   
   public room () {
     this.obstacles = new ArrayList<obstacle>();
     this.enemies = new  ArrayList<enemy>();
     this.bosses = new ArrayList<boss>();
+    this.wall = loadImage("walltest.jpg");
+    this.enemy1 = loadImage("2D Pixel Dungeon Asset Pack/Character_animation/monsters_idle/skull/v2/skull_v2_1.png");
+    this.spriteTicks = 0;
+    this.prevSpr = 1;
   }
   
   public room(ArrayList<obstacle> obstacles, ArrayList<enemy> enemies, ArrayList<boss> bosses) {
@@ -24,7 +32,12 @@ class room {
     for (obstacle ob : obstacles) {
       stroke(0);
       fill(0); 
-      rect(ob.pos.x, ob.pos.y, ob.w, ob.h);
+      for (int i = 0; i < ob.w / 25; i++) {
+        for (int j = 0; j < ob.h / 25; j++) {
+          copy(wall, 0, 0, 15, 15, (int) ob.pos.x + i * 25, (int) ob.pos.y + j * 25, 25, 25);
+        }
+      }
+      //rect(ob.pos.x, ob.pos.y, ob.w, ob.h);
     }
   }
   
@@ -42,7 +55,12 @@ class room {
     for (enemy e : enemies) {
       stroke(0);
       fill(255, 0, 0);
-      rect(e.pos.x, e.pos.y, 50, 50);
+      //rect(e.pos.x, e.pos.y, 50, 50);
+      if (this.spriteTicks % 50 == 0) {
+        prevSpr = (prevSpr + 1) % 4 + 1;
+        enemy1 = loadImage("2D Pixel Dungeon Asset Pack/Character_animation/monsters_idle/skull/v2/skull_v2_" + prevSpr + ".png");
+      }
+      copy(enemy1, 0, 0, 16, 16, (int) e.pos.x, (int) e.pos.y, 60, 60);
       behavior(e);
     }
   }
