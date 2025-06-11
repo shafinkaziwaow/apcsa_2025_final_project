@@ -33,6 +33,8 @@ int sprX, sprY;
 void setup() {
   gurt = loadImage("mainlevbuildtest3.jpg");
   bro = loadImage("Human-Soldier-Red.png");
+  swordSpr = loadImage("Pack Icons 2/SwordRotate90.png");
+  arrow = loadImage("Pack Icons 2/arRotated.png");
   sprX = 37;
   sprY = 2;
   
@@ -159,6 +161,8 @@ void setup() {
   currentRoom = levelOneC;
   hindex = 1;
   vindex = 0;
+  
+  hero.inventoryQuantities.set(0, 10000000);
 
 
   
@@ -313,8 +317,9 @@ void draw() {
       push();
       translate(hero.pos.x + 25, hero.pos.y + 25);
       rotate(atkAng);
-      fill(0, 255, 0);
-      rect(0, -2.5, 75, 5);
+      //fill(0, 255, 0);
+      //rect(0, -2.5, 75, 5);
+      copy(swordSpr, 0, 0, 32, 32, 20, 0, 50, 50);
       pop();
       for (enemy e : currentRoom.enemies) {
         if (sword.inRange(e, 75) && !sword.enemiesHit.contains(e)) {
@@ -346,8 +351,21 @@ void draw() {
         }
       }
       projectile.ticks--;
-      fill(0, 255, 0);
-      rect(projectile.pos.x, projectile.pos.y, 10, 10);
+      //fill(0, 255, 0);
+      //rect(projectile.pos.x, projectile.pos.y, 10, 10);
+      push();
+      translate(projectile.pos.x, projectile.pos.y);
+      if (projectile.dir == 1) {
+        rotate(-HALF_PI);
+      }
+      if (projectile.dir == 3) {
+        rotate(HALF_PI);
+      }
+      if (projectile.dir == 4) {
+        rotate(PI);
+      }
+      copy(arrow, 0, 0, 48, 48, 0, 0, 50, 50);
+      pop();
     }
     
     
