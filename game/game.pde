@@ -25,7 +25,7 @@ entity sword;
 entity projectile;
 entity bomb;
 entity chest;
-PImage gurt, bro, swordSpr, arrow, farrow, axe;
+PImage gurt, bro, swordSpr, arrow, farrow, axe, chestSpr;
 int sprX, sprY;
 
 //int speed = 25;
@@ -35,6 +35,8 @@ void setup() {
   bro = loadImage("Human-Soldier-Red.png");
   swordSpr = loadImage("Pack Icons 2/SwordRotate90.png");
   arrow = loadImage("Pack Icons 2/arRotated.png");
+  farrow = loadImage("Pack Icons 2/flArRotated.png");
+  chestSpr = loadImage("Assets.png");
   sprX = 37;
   sprY = 2;
   
@@ -64,8 +66,8 @@ void setup() {
   size(900, 700);
   surface.setLocation(160, 90);
   
-  hero.inventoryNames.add("Ammo");
-  hero.inventoryNames.add("Bombs");
+  hero.inventoryNames.add("Arrows");
+  hero.inventoryNames.add("Fire Arrows");
   hero.inventoryNames.add("Health Potions");
   hero.inventoryQuantities.add(0);
   hero.inventoryQuantities.add(0);
@@ -96,20 +98,20 @@ void setup() {
   levelTwoL.addObstacle(100, 300, 300, 225, 0);
   levelTwoL.addObstacle(500, 75, 400, 225, 0);
   levelTwoL.addObstacle(25, 100, 0, height / 2 - 50, 0);
-  levelTwoL.addEnemy(700, 75, "enemy", 150, 35, 4);
-  levelTwoL.addEnemy(100, 500, "enemy", 200, 50, 1);
+  levelTwoL.addEnemy(700, 75, "skull", 150, 35, 4);
+  levelTwoL.addEnemy(100, 500, "skull", 200, 50, 1);
   levelTwoL.addEnemy(800, 325, "guard", 350, 75, 1);
   levelTwoC.addObstacle(350, 200, 150, 300, 0);
   levelTwoC.addObstacle(300, 200, 600, 0, 0);
   levelTwoC.addObstacle(100, 125, 25, 550, 0);
-  levelTwoC.addEnemy(50, 50, "enemy", 250, 50, 2);
-  levelTwoC.addEnemy(600, 225, "enemy", 250, 50, 3);
-  levelTwoC.addEnemy(675, 600, "enemy", 350, 50, 2); 
+  levelTwoC.addEnemy(50, 50, "skull", 250, 50, 2);
+  levelTwoC.addEnemy(600, 225, "skull", 250, 50, 3);
+  levelTwoC.addEnemy(675, 600, "skull", 350, 50, 2); 
   levelTwoR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelTwoR.addObstacle(50, 550, 175, 0, 0);
-  levelTwoR.addEnemy(75, 25, "enemy", 150, 35, 3);
-  levelTwoR.addEnemy(100, 125, "enemy", 200, 35, 3);
-  levelTwoR.addEnemy(75, 225, "enemy", 150, 35, 3);
+  levelTwoR.addEnemy(75, 25, "skull", 150, 35, 3);
+  levelTwoR.addEnemy(100, 125, "skull", 200, 35, 3);
+  levelTwoR.addEnemy(75, 225, "skull", 150, 35, 3);
   levelTwoR.addEnemy(750, 600, "distaction man", 500, 25, 4);
   
   map3.add(levelThreeL);
@@ -118,18 +120,18 @@ void setup() {
   map3.add(finalRoom);
   fullMap.add(map3);
   levelThreeL.addObstacle(25, 100, 0, height / 2 - 50, 0);
-  levelThreeL.addEnemy(100, 100, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(200, 200, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(300, 300, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(400, 400, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(500, 500, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(600, 600, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(600, 100, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(500, 200, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(400, 300, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(300, 400, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(200, 500, "enemy", 150, 50, 1);
-  levelThreeL.addEnemy(100, 600, "enemy", 150, 50, 1);
+  levelThreeL.addEnemy(100, 100, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(200, 200, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(300, 300, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(400, 400, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(500, 500, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(600, 600, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(600, 100, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(500, 200, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(400, 300, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(300, 400, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(200, 500, "skull", 150, 50, 1);
+  levelThreeL.addEnemy(100, 600, "skull", 150, 50, 1);
   levelThreeC.addObstacle(100, 100, width / 2 - 150, height / 2 - 150, 0);
   levelThreeC.addObstacle(100, 100, width / 2 + 50, height / 2 - 150, 0);
   levelThreeC.addObstacle(100, 100, width / 2 - 150, height / 2 + 50, 0);
@@ -138,14 +140,15 @@ void setup() {
   levelThreeC.addObstacle(150, 150, 25, height - 175, 0);
   levelThreeC.addObstacle(150, 150, width - 175, 25, 0);
   levelThreeC.addObstacle(150, 150, width - 175, height - 175, 0);
-  levelThreeC.addEnemy(200, 50, "enemy", 200, 33, 2); 
-  levelThreeC.addEnemy(width - 250, 50, "enemy", 150, 33, 4); 
-  levelThreeC.addEnemy(75, height - 250, "enemy", 200, 33, 1); 
-  levelThreeC.addEnemy(75, height - 500, "enemy", 150, 33, 3); 
-  levelThreeC.addEnemy(width - 150, height - 250, "enemy", 200, 33, 1); 
-  levelThreeC.addEnemy(width - 150, height - 500, "enemy", 150, 33, 3); 
-  levelThreeC.addEnemy(width / 2 - 25, height - 75, "enemy", 400, 50, 1);
+  levelThreeC.addEnemy(200, 50, "skull", 200, 33, 2); 
+  levelThreeC.addEnemy(width - 250, 50, "skull", 150, 33, 4); 
+  levelThreeC.addEnemy(75, height - 250, "skull", 200, 33, 1); 
+  levelThreeC.addEnemy(75, height - 500, "skull", 150, 33, 3); 
+  levelThreeC.addEnemy(width - 150, height - 250, "skull", 200, 33, 1); 
+  levelThreeC.addEnemy(width - 150, height - 500, "skull", 150, 33, 3); 
+  levelThreeC.addEnemy(width / 2 - 25, height - 75, "skull", 400, 50, 1);
   levelThreeR.addObstacle(75, 10000, 550, 0, 0);
+  levelThreeR.addObstacle(50, 50, (int) chest.pos.x, (int) chest.pos.y, 0);
   levelThreeR.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   levelThreeR.addBoss(400, 500, "chest guardian", 250, 250, 25, 1);
   
@@ -154,15 +157,16 @@ void setup() {
   finalRoom.addObstacle(25, 100, width - 25, height / 2 - 50, 0);
   finalRoom.addObstacle(150, 150, 150, 150, 0);
   finalRoom.addObstacle(200, 200, 550, 400, 0);
-  finalRoom.addEnemy(width / 2 - 25, height / 2 - 25, "enemy", 900, 45, 1);
+  finalRoom.addEnemy(width / 2 - 25, height / 2 - 25, "skull", 900, 45, 1);
   finalRoom.addBoss(75, 175, "boss 1", 450, 250, 50, 1);
   finalRoom.addBoss(800, 475, "boss 2", 450, 250, 50, 1);
   
-  currentRoom = levelOneC;
-  hindex = 1;
-  vindex = 0;
+  currentRoom = levelThreeR;
+  hindex = 2;
+  vindex = 2;
   
   hero.inventoryQuantities.set(0, 10000000);
+  hero.inventoryQuantities.set(1, 10000000);
 
 
   
@@ -215,17 +219,19 @@ void draw() {
     
     //chest 
     if (hindex == 2 && vindex == 2) {
-      fill(0, 255, 0);
-      rect(chest.pos.x, chest.pos.y, 50, 50);
+      //fill(0, 255, 0);
+      //rect(chest.pos.x, chest.pos.y, 50, 50);
+      copy(chestSpr, 34, 130, 12, 12, (int) chest.pos.x, (int) chest.pos.y, 50, 50);
       if (currentRoom.bosses.isEmpty()) {
         currentRoom.obstacles.get(0).pos = new PVector(100000, 1000000);
       }
       if (hero.inRange(chest, 50) && key == 'i') {
         chest.pos = new PVector(100000, 10000);
+        currentRoom.obstacles.get(1).pos = new PVector(10000, 1000000);
         generalMessage = "You found a chest full of supplies!" + "\n" + 
-        "You picked up 5 Health Potions!" + "\n" + 
-        "You picked up 10 ammo!" + "\n" + 
-        "You picked up 5 bombs!";
+        "You picked up 5 health potions!" + "\n" + 
+        "You picked up 10 arrows!" + "\n" + 
+        "You picked up 5 fire arrows!";
         generalMessageDuration = 100;
         hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) + 10);
         hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) + 5);
@@ -251,21 +257,21 @@ void draw() {
         //ammo
         if (chanceDropAmmo < 0.6) {
           int dropAmmount = (int) (Math.random() * 4) + 1;
-          message += e.name + " dropped " + dropAmmount + " ammo!" + "\n";
+          message += e.name + " dropped " + dropAmmount + " arrows!" + "\n";
           hero.inventoryQuantities.set(0, hero.inventoryQuantities.get(0) + dropAmmount);
         }
         
         // bomb
         if (chanceDropBomb < 0.25) {
           int dropAmmount = (int) (Math.random() * 3) + 1;
-          message += e.name + " dropped " + dropAmmount + " bombs!" + "\n";
+          message += e.name + " dropped " + dropAmmount + " fire arrows!" + "\n";
           hero.inventoryQuantities.set(1, hero.inventoryQuantities.get(1) + dropAmmount);
         }
         
         // hp potion 
         if (chanceDropHPot < 0.34) { 
           int dropAmmount = (int) (Math.random() * 2) + 1;
-          message += e.name + " dropped " + dropAmmount + " Health Potions!" + "\n";
+          message += e.name + " dropped " + dropAmmount + " health potions!" + "\n";
           hero.inventoryQuantities.set(2, hero.inventoryQuantities.get(2) + dropAmmount);
         }
         
@@ -354,7 +360,7 @@ void draw() {
       //fill(0, 255, 0);
       //rect(projectile.pos.x, projectile.pos.y, 10, 10);
       push();
-      translate(projectile.pos.x, projectile.pos.y);
+      translate(projectile.pos.x + 25, projectile.pos.y + 25);
       if (projectile.dir == 1) {
         rotate(-HALF_PI);
       }
@@ -385,8 +391,21 @@ void draw() {
         } 
       }
       bomb.ticks--;
-      fill(0, 255, 0);
-      rect(bomb.pos.x, bomb.pos.y, 25, 25);
+      //fill(0, 255, 0);
+      //rect(bomb.pos.x, bomb.pos.y, 25, 25);
+      push();
+      translate(bomb.pos.x + 25, bomb.pos.y + 25);
+      if (bomb.dir == 1) {
+        rotate(-HALF_PI);
+      }
+      if (bomb.dir == 3) {
+        rotate(HALF_PI);
+      }
+      if (bomb.dir == 4) {
+        rotate(PI);
+      }
+      copy(farrow, 0, 0, 48, 48, 0, 0, 50, 50);
+      pop();
       if (bomb.ticks <= 0 && bomb.inRange(hero, 25)) {
           bomb.attack(hero); 
       }
@@ -438,8 +457,8 @@ void keyPressed() {
     if (key == 'p') {
       hero.isPaused = !hero.isPaused;
       pauseMessage = "Controls: " + "\n";
-      pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + 
-      "\n" + "K - ranged attack" + "\n" + "L - bomb" + "\n" + "H - health potion" + "\n" + "E - inventory" + "\n" + "P - pause";
+      pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - sword attack" + 
+      "\n" + "K - shoot arrow" + "\n" + "L - shoot fire arrow" + "\n" + "H - health potion" + "\n" + "E - inventory" + "\n" + "P - pause";
     } 
     if (key == 'o') {
       hero.isPaused = !hero.isPaused;
@@ -448,7 +467,11 @@ void keyPressed() {
       "side, the walls close in on you. The only way" + "\n" + 
       "forward from there is downwards. Descend" + "\n" + 
       "the labyrinth, fighting your way to the end" + "\n" + 
-      "for your freedom.";
+      "for your freedom." + "\n" + "\n" +  
+      "You start with just your sword, but you can" + "\n" + 
+      "find arrows and fire arrows along the way." + "\n" + 
+      "Be careful, fire arrows can damage you if you" + "\n" + 
+      "stand too close to them!";
     }
   } else {
   // movement 
@@ -558,8 +581,8 @@ void keyPressed() {
     hero.isPaused = !hero.isPaused;
     pauseMessage = "PAUSED" + "\n" + "\n";
     pauseMessage += "Controls: " + "\n";
-    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - melee attack" + 
-    "\n" + "K - ranged attack" + "\n" + "L - bomb" + "\n" + "H - health potion" + "\n" + "E - inventory" + "\n" + "P - pause";
+    pauseMessage += "W - up" + "\n" + "A - left" + "\n" + "S - down" + "\n" + "D - right" + "\n" + "I - interact" + "\n" + "J - sword attack" + 
+    "\n" + "K - shoot arrow" + "\n" + "L - shoot fire arrow" + "\n" + "H - health potion" + "\n" + "E - inventory" + "\n" + "P - pause";
   }
   
   if (key == 'e') {
