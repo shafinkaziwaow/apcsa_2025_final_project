@@ -1,75 +1,59 @@
-Meeting 2
+
+Intro:
+
+Design Document
 APCSA Period 7
 Shafin Kazi
-The Legend of Processing
+The Binding of Processing
 
-Description 
+
+Description:
 
 The player spawns in a room where there are multiple pathways
 The map is comprised of different vertical "layers" or "levels"
 Whenever entering a room horizontally, all exits are closed besides the one leading further down into the next layer / level
+Each layer down is harder than the previous 
 Each room contains different obstacles / enemies
-Killing enemies can level the player up 
-At a certain depth, there will be a final boss to beat
-Leveling up increases ATK and HP (and potentially new skills / items)
-After defeating the final boss, the player wins 
+Killing enemies gives the player between 50 and 75 EXP
+Killing bosses gives the player 100 EXP
+After collecting enough EXP, the player levels up
+Leveling up increases ATK, max HP, and the EXP needed to level up again
+Each enemy has a chance to drop an arrow, fire arrow, and/or health potion upon death (60% / 25% / 34%)
+After the third level, going down leads to the same "final room" which poses the hardest challenge
+After clearing the final room, the player wins 
 
-The map layout can probably be held in a 2d array or something similar 
+The map layout is held in a 2d array list 
 
 {   { top-left, top-middle, top-right }
     { center-left, center-middle, center-right }
-    { bottom-left, bottom-middle, bottom-right }   }   
+    { bottom-left, bottom-middle, bottom-right, final-room }   }   
 
 when hitting the border of the map and pressing the interact button, it redraws the background to match the corresponding map 
+except for going downwards on the third level, all rooms lead to the final room
 e.g. when you're in the center-middle room and you hit i when x == 0 --> you change to the center-left room 
 
-Room Class 
-    - holds all the obstacles and enemies and their layout in that specific room 
-    - functions to place / draw obstacles / enemies and their behavior
 
-Obstacle Class 
-    - holds position and size of obstacles
+How does it work?:
 
+Starting the game takes you to the title screen. You can press P to show the controls, O to show a brief plot and your 
+objective, or ENTER to start the game. 
 
-Entity Class
-    - holds hp, atk, position
-    - contains a function that shows if you're in range with another entity
-    - contains a function that shows if you're able to move to a certain spot (i.e. if there is an obstacle the edge of the map, it'll say you cannot go there)
-
-Enemy Class extends Entity 
-    - holds the range at which the enemy can detect the player  
-    - if health == 0 they die and they are removed from the map
-    - enemy behavior:
-	- has an 80% chance to move in the direction of the player and a 20% chance to move in a random direction
-        - switches directions every 5 "ticks"
-	- if they are in range of the player and their attack is off cooldown, they will stop moving for a second before damaging the player
-
-Player class extends Entity 
-    - holds an inventory 
-    - if health == 0 they die and the game over screen plays
-    - they have attacks that can damage enemies if they are within its range  
-
-
-Controls 
+Controls:
     - P to pause (also shows controls)
     - WASD to move
     - I to interact 	
     - J to melee attack
+    - K to shoot arrows 
+    - L to shoot fire arrows 
+    - H to use health potions
+    - E to look at inventory 
+
+Upon death or completing the game, you can press ENTER to try again or replay
 
 
-Functionalities / Issues (Meeting 1)
-    - Currently, I have moving and collisions with obstacles (you can't go into them) 
-    - I started on the map idea where pressing a button on the border of the screen takes you to a new room
-    - By next meeting, I'd hope to have the map done (all the different rooms arranged and connected) 
-    - Getting started on player/enemy moves would be good as well
-
-Functionalities / Issues (Meeting 2) 
-    - I started working on enemy behavior first before making the setup of each room, so I didn't exactly follow the plan I had 
-    - Enemy behavior and attacking work mostly fine, however there is an issue where enemies can go through objects. It's not a very consistent bug, so I'm not too sure how to fix it. 
-    - I added a pause menu as well 
-    - Things still to add:
-	- Layout of obstacles / enemies in each room
-	- Items / Inventory 
-	- EXP / Leveling up
-	- Final Boss
-	- Start Screen / End Screen
+Assets Used (Sprites):
+https://szadiart.itch.io/rogue-fantasy-catacombs
+https://pixel-poem.itch.io/dungeon-assetpuck
+https://bakudas.itch.io/generic-dungeon-pack
+https://merchant-shade.itch.io/16x16-puny-characters
+https://pixelhole.itch.io/medieval-weapons-pack
